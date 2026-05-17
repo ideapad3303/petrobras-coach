@@ -314,7 +314,97 @@ input:focus,select:focus{border-color:var(--blue)}
 .alarm-emoji{font-size:56px;display:block;margin-bottom:12px}
 .alarm-title{font-size:22px;font-weight:700;margin-bottom:6px;color:var(--blue)}
 .alarm-sub{font-size:14px;color:var(--text2);margin-bottom:20px}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — Mobile & Tablet
+═══════════════════════════════════════════ */
+@media (max-width: 768px){
+  /* Esconder sidebar, mostrar bottom nav */
+  .sidebar{ display:none !important; }
+  .main{ margin-left:0 !important; padding-bottom:70px; }
+  .topbar{ padding:12px 16px; }
+  .topbar-title{ font-size:15px; }
+  .topbar-actions .btn{ font-size:11px; padding:5px 8px; }
+  .content{ padding:12px 14px; }
+
+  /* Bottom navigation */
+  .bottom-nav{ display:flex !important; }
+
+  /* Grids colapsam para 1 coluna */
+  .grid2,.grid3,.grid4{ grid-template-columns:1fr !important; gap:10px !important; }
+  .fc-stats{ grid-template-columns:1fr 1fr !important; }
+  .rpg-stats-grid{ grid-template-columns:1fr 1fr !important; }
+
+  /* Timer */
+  .timer-display{ font-size:42px !important; }
+  .fc-ratings{ grid-template-columns:1fr 1fr !important; }
+
+  /* Flashcard carta */
+  .fc-card-wrap{ width:290px !important; height:410px !important; }
+  .fc-scene{ perspective:900px !important; }
+
+  /* Heatmap menor */
+  .hm-cell{ border-radius:3px !important; }
+
+  /* Inputs maiores para toque */
+  input[type=text],input[type=number],input[type=date],select{ padding:10px 12px !important; font-size:15px !important; }
+  button.btn{ padding:10px 16px !important; font-size:14px !important; }
+  .btn.sm{ padding:8px 12px !important; font-size:13px !important; }
+
+  /* Config: stacking */
+  .grid2 > div:first-child, .grid2 > div:last-child { width:100%; }
+
+  /* Topbar ações menores */
+  #install-bar{ font-size:11px !important; padding:6px 12px !important; }
+
+  /* Flashcard ratings */
+  .fc-rate-btn{ padding:10px 4px !important; font-size:12px !important; }
+
+  /* Subjects grid */
+  .subj-grid{ grid-template-columns:1fr 1fr !important; }
+  .subtop-grid{ gap:5px !important; }
+  .subtop-btn{ font-size:11px !important; padding:5px 8px !important; }
+}
+
+@media (max-width: 480px){
+  .topbar-title{ font-size:14px; }
+  .topbar-actions{ gap:4px; }
+  .topbar-actions .btn span{ display:none; }
+  .grid4{ grid-template-columns:1fr 1fr !important; }
+  .fc-stats{ grid-template-columns:1fr 1fr !important; }
+  .timer-display{ font-size:36px !important; letter-spacing:2px !important; }
+  .fc-card-wrap{ width:260px !important; height:370px !important; }
+  .rpg-card-hero{ flex-direction:column !important; text-align:center !important; }
+  .rpg-avatar{ font-size:40px !important; }
+}
+
+/* Bottom navigation bar */
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--blue);
+  border-top:1px solid rgba(255,255,255,.15);
+  z-index:100;height:62px;
+  justify-content:space-around;align-items:center;
+  padding:0 4px;
+  box-shadow:0 -2px 12px rgba(0,0,0,.15);
+}
+.bn-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;color:rgba(255,255,255,.55);padding:8px 12px;border-radius:10px;
+  font-size:10px;font-weight:500;transition:all .15s;min-width:52px;text-align:center;
+}
+.bn-item:hover,.bn-item.active{ color:#fff; }
+.bn-item.active{ background:rgba(255,255,255,.15); }
+.bn-icon{ font-size:20px;line-height:1; }
+
 </style>
+
+<meta name="theme-color" content="#0D4F8B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Petrobras Coach">
 </head>
 <body>
 
@@ -362,7 +452,17 @@ input:focus,select:focus{border-color:var(--blue)}
 
 <!-- MAIN -->
 <div class="main">
-  <div id="install-bar" class="install-hint" style="display:none">
+  <!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bn-item active" id="bn-timer" onclick="goView('timer')"><span class="bn-icon">⏱️</span>Timer</div>
+  <div class="bn-item" id="bn-painel" onclick="goView('painel')"><span class="bn-icon">📊</span>Painel</div>
+  <div class="bn-item" id="bn-simulado" onclick="goView('simulado')"><span class="bn-icon">📝</span>Simulados</div>
+  <div class="bn-item" id="bn-progresso" onclick="goView('progresso')"><span class="bn-icon">📈</span>Progresso</div>
+  <div class="bn-item" id="bn-flashcards" onclick="goView('flashcards')"><span class="bn-icon">🃏</span>Cards</div>
+  <div class="bn-item" id="bn-config" onclick="goView('config')"><span class="bn-icon">⚙️</span>Config</div>
+</nav>
+
+<div id="install-bar" class="install-hint" style="display:none">
     💡 Para usar como app: clique nos <b>três pontinhos</b> do navegador → <b>Instalar página</b> — fica com ícone na área de trabalho, sem barra do navegador.
     <button onclick="document.getElementById('install-bar').style.display='none'">Entendi</button>
   </div>
@@ -1298,6 +1398,11 @@ function delSim(id){state.simulados=state.simulados.filter(s=>s.id!==id);saveSta
 function goView(view){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach((el,i)=>el.classList.toggle('active',['timer','painel','simulado','progresso','config','flashcards'][i]===view));
+  // Bottom nav mobile
+  ['timer','painel','simulado','progresso','flashcards','config'].forEach(v=>{
+    const el=document.getElementById('bn-'+v);
+    if(el)el.classList.toggle('active',v===view);
+  });
   document.getElementById('view-'+view).classList.add('active');
   document.getElementById('tb-title').textContent=VIEWS[view];
   document.getElementById('tb-sub').textContent=VSUBS[view];
@@ -2505,27 +2610,43 @@ async function syncPull(){
     const localTime = state._syncedAt ? new Date(state._syncedAt) : new Date(0);
     const remoteTime = remote._syncedAt ? new Date(remote._syncedAt) : new Date(0);
     if(remoteTime <= localTime){
-      syncSetStatus('ok', 'Dados locais já são os mais recentes.');
+      syncSetStatus('ok', '✓ Dados locais já são os mais recentes.');
       return;
     }
-    if(!confirm('Dados mais recentes encontrados na nuvem ('+ new Date(remote._syncedAt).toLocaleString('pt-BR') +'). Substituir dados locais?')) return;
+    // Sem confirm() — carrega automaticamente se remoto for mais novo
     const {_syncedAt, ...clean} = remote;
     state = {...state, ...clean};
     saveState();
     renderAll();
-    syncSetStatus('ok', '✓ Dados carregados da nuvem.');
+    const dt = new Date(remote._syncedAt).toLocaleString('pt-BR');
+    syncSetStatus('ok', '✓ Dados carregados da nuvem ('+dt+')');
   } catch(e){
     syncSetStatus('err', '✗ '+e.message);
   }
 }
 
-function syncSave(){
+async function syncSave(){
   const inp = document.getElementById('sync-token-inp');
-  if(!inp||!inp.value.trim()){ return; }
+  if(!inp||!inp.value.trim()) return;
   syncSetToken(inp.value.trim());
   inp.value='';
   renderSyncConfig();
-  syncNow();
+  // Num dispositivo novo: primeiro busca o Gist existente, não cria um novo
+  syncSetStatus('ing','Buscando dados na nuvem...');
+  try{
+    const gists = await gistRequest('GET', '/gists');
+    const existing = gists.find(g=>g.description===GIST_DESC&&g.files[GIST_FILE]);
+    if(existing){
+      syncSetGistId(existing.id);
+      renderSyncConfig();
+      await syncPull(); // Puxar dados do Gist existente
+    } else {
+      // Nenhum Gist existente — criar com os dados atuais
+      await syncNow();
+    }
+  } catch(e){
+    syncSetStatus('err','✗ Erro ao buscar Gist: '+e.message);
+  }
 }
 
 function syncClear(){

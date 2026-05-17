@@ -818,8 +818,12 @@ input:focus,select:focus{border-color:var(--blue)}
               <div style="font-size:11px;color:var(--text3);margin-top:5px">Marque apenas o escopo <b>gist</b> ao gerar o token. Ele fica salvo só neste dispositivo.</div>
             </div>
             <div id="sync-gist-row" style="display:none;margin-bottom:10px">
-              <div class="input-label" style="margin-bottom:5px">ID do Gist <span style="font-size:11px;font-weight:400;color:var(--text3)">(preenchido automaticamente)</span></div>
-              <input type="text" id="sync-gist-inp" placeholder="Será criado automaticamente" style="font-family:monospace;font-size:12px" readonly>
+              <div class="input-label" style="margin-bottom:5px">ID do Gist <span style="font-size:11px;font-weight:400;color:var(--text3)">— cole aqui para conectar em outro dispositivo</span></div>
+              <div style="display:flex;gap:8px">
+                <input type="text" id="sync-gist-inp" placeholder="Cole o ID do Gist aqui..." style="font-family:monospace;font-size:12px;flex:1">
+                <button class="btn sm" onclick="syncConnectGist()">Conectar</button>
+              </div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Copie o ID do Gist de outro dispositivo onde o sync já funciona e cole aqui.</div>
             </div>
             <div class="btn-row">
               <button class="btn success sm" id="sync-now-btn" onclick="syncNow()" style="display:none">🔄 Sincronizar agora</button>
@@ -2673,14 +2677,25 @@ function renderSyncConfig(){
   const pullBtn = document.getElementById('sync-pull-btn');
   if(inp) inp.placeholder = token ? '••••••••••••••• (configurado)' : 'ghp_xxxxxxxxxxxx';
   if(gistRow) gistRow.style.display = token ? 'block' : 'none';
-  if(gistInp) gistInp.value = gistId || '(será criado na primeira sincronização)';
+  if(gistInp && !gistInp.value) gistInp.value = gistId || '';
+  if(gistInp && gistId) gistInp.placeholder = gistId; // mostra ID atual como placeholder
   if(syncBtn) syncBtn.style.display = token ? 'inline-flex' : 'none';
   if(pullBtn) pullBtn.style.display = (token&&gistId) ? 'inline-flex' : 'none';
   if(token){
-    syncSetStatus('idle', gistId ? 'Configurado — aguardando sync' : 'Token salvo — pronto para sincronizar');
+    syncSetStatus('idle', gistId ? 'Configurado — ID: '+gistId.slice(0,8)+'...' : 'Token salvo — cole o ID do Gist ou sincronize');
   } else {
     syncSetStatus('idle', 'Sync não configurado');
   }
+}
+
+async function syncConnectGist(){
+  const inp = document.getElementById('sync-gist-inp');
+  const id = inp?.value.trim();
+  if(!id){ syncSetStatus('err','Cole o ID do Gist primeiro.'); return; }
+  if(!syncGetToken()){ syncSetStatus('err','Configure o token primeiro.'); return; }
+  syncSetGistId(id);
+  renderSyncConfig();
+  await syncPull();
 }
 
 // ======== INIT ========

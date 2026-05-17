@@ -1,0 +1,2580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petrobras Coach — Técnico de Operações</title>
+<style>
+:root{--blue:#0D4F8B;--blue2:#0a3d6e;--green:#0D6B3E;--amber:#EF9F27;--red:#A32D2D;--bg:#f0f2f5;--surface:#fff;--border:#dde1e7;--text:#1a1a2e;--text2:#555;--text3:#999;--radius:10px;--shadow:0 2px 8px rgba(0,0,0,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+/* SIDEBAR */
+.sidebar{width:230px;min-height:100vh;background:var(--blue);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:10}
+.logo-area{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.12)}
+.logo-row{display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;background:var(--amber);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.logo-text h1{font-size:15px;font-weight:600;color:#fff}
+.logo-text p{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px}
+.nav{padding:16px 0;flex:1}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 20px;cursor:pointer;color:rgba(255,255,255,.7);font-size:13.5px;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.14);color:#fff;border-left-color:var(--amber);font-weight:500}
+.nav-icon{font-size:18px;width:22px;text-align:center;flex-shrink:0}
+.sidebar-stats{padding:16px 20px;border-top:1px solid rgba(255,255,255,.12)}
+.ss-label{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:4px}
+.ss-value{font-size:20px;font-weight:600;color:#fff}
+.ss-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px}
+.ss-bar{height:5px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:8px;overflow:hidden}
+.ss-fill{height:100%;background:var(--amber);border-radius:3px;transition:width .4s}
+.countdown-mini{margin-top:14px;text-align:center}
+.cd-num{font-size:28px;font-weight:700;color:var(--amber)}
+.cd-label{font-size:11px;color:rgba(255,255,255,.55)}
+/* MAIN */
+.main{margin-left:230px;flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+.topbar-title{font-size:18px;font-weight:600}
+.topbar-sub{font-size:12px;color:var(--text3);margin-top:1px}
+.topbar-actions{display:flex;gap:8px}
+.content{padding:24px 28px;flex:1}
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow)}
+.card+.card{margin-top:16px}
+.sec-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px}
+.metric-label{font-size:12px;color:var(--text3);margin-bottom:4px}
+.metric-value{font-size:26px;font-weight:600;letter-spacing:-.5px}
+.metric-sub{font-size:12px;color:var(--text3);margin-top:3px}
+/* BUTTONS */
+.btn{border:1px solid var(--border);background:var(--surface);border-radius:8px;padding:8px 18px;font-size:13.5px;cursor:pointer;color:var(--text);font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:7px;font-weight:500}
+.btn:hover{background:var(--bg)}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn.primary:hover{background:var(--blue2)}
+.btn.success{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.success:hover{background:#0a5230}
+.btn.danger{background:#FCEBEB;color:var(--red);border-color:#f5b8b8}
+.btn.sm{padding:5px 12px;font-size:12px}
+.btn-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* INPUTS */
+input[type=text],input[type=number],input[type=date],select{border:1px solid var(--border);background:#fff;border-radius:8px;padding:9px 12px;font-size:13.5px;color:var(--text);font-family:inherit;width:100%;outline:none;transition:border-color .15s}
+input:focus,select:focus{border-color:var(--blue)}
+.input-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px}
+.input-group{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* TIMER */
+.timer-wrap{text-align:center;padding:20px 0 10px}
+.timer-display{font-size:72px;font-weight:700;letter-spacing:4px;font-family:'Courier New',monospace;color:var(--text);line-height:1}
+.timer-display.running{color:var(--green)}
+
+
+
+/* SUBJECT GRID */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:10px}
+.subj-btn{border:1.5px solid var(--border);background:#fff;border-radius:8px;padding:10px 12px;font-size:13px;cursor:pointer;text-align:left;color:var(--text2);font-family:inherit;transition:all .15s}
+.subj-btn:hover{background:var(--bg)}
+.subj-btn.active{font-weight:600}
+/* STARS */
+.star-row{display:flex;gap:8px;align-items:center}
+.star{font-size:26px;cursor:pointer;color:#ddd;transition:color .1s;line-height:1}
+.star.on{color:var(--amber)}
+/* BARS */
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.bar-label{font-size:13px;color:var(--text2);width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.bar-track{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s}
+.bar-val{font-size:12px;color:var(--text3);width:60px;text-align:right;flex-shrink:0}
+/* ALERTS */
+.alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;border:1px solid}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.alert-warn{background:#FFF8E6;color:#7a4a00;border-color:#ffd97d}
+.alert-info{background:#E8F2FC;color:#1a4f80;border-color:#90bbec}
+.alert-ok{background:#EDF7ED;color:#1e5c1e;border-color:#93d093}
+.alert-danger{background:#FDECEA;color:#7d1a1a;border-color:#f0a0a0}
+/* SESSIONS */
+.sess-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:8px;margin-bottom:8px}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sess-name{font-size:13.5px;flex:1;font-weight:500}
+.sess-meta{font-size:12px;color:var(--text3)}
+.del-btn{border:none;background:none;cursor:pointer;color:var(--text3);font-size:16px;padding:2px 6px;border-radius:6px;transition:all .15s}
+.del-btn:hover{background:#FDECEA;color:var(--red)}
+/* PROGRESS BAR */
+.prog-bar{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin-top:6px}
+.prog-fill{height:100%;border-radius:4px;transition:width .5s}
+/* STREAK */
+.streak{display:inline-flex;align-items:center;gap:5px;background:#FFF3DC;color:#7a4a00;border-radius:20px;padding:3px 12px;font-size:12px;font-weight:600;margin-top:6px}
+/* TABS (views) */
+.view{display:none}
+.view.active{display:block}
+/* CHART */
+.chart-wrap{position:relative;height:200px;margin-top:12px}
+/* SIM */
+.sim-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg);border-radius:8px;margin-bottom:8px}
+.sim-nota{font-size:20px;font-weight:700}
+.sim-meta{font-size:12px;color:var(--text3);margin-top:2px}
+.badge{display:inline-flex;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+.badge-ok{background:#EDF7ED;color:#1e5c1e}
+.badge-warn{background:#FFF8E6;color:#7a4a00}
+.badge-bad{background:#FDECEA;color:#7d1a1a}
+/* CONFIG subject manager */
+.subj-man-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg)}
+.subj-man-row:last-child{border-bottom:none}
+.color-dot{width:18px;height:18px;border-radius:50%;cursor:pointer;flex-shrink:0;border:2px solid rgba(0,0,0,.1);transition:transform .15s}
+.color-dot:hover{transform:scale(1.2)}
+.color-picker{display:flex;gap:8px;flex-wrap:wrap;padding:8px 0 10px 28px}
+.cp{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .1s}
+.cp:hover{transform:scale(1.15)}
+.cp.sel{border-color:#222}
+.empty{font-size:13px;color:var(--text3);text-align:center;padding:24px 0}
+.scroll-box{max-height:240px;overflow-y:auto}
+/* WEIGHT */
+.weight-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.weight-name{font-size:13.5px;flex:1}
+.weight-inp{width:70px}
+/* TOPBAR INSTALL HINT */
+.install-hint{background:var(--blue);color:#fff;font-size:12px;padding:8px 28px;display:flex;align-items:center;gap:10px}
+.install-hint button{background:var(--amber);border:none;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600}
+.divider{height:1px;background:var(--border);margin:16px 0}
+/* SYNC */
+.sync-status{display:flex;align-items:center;gap:6px;font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:10px}
+.sync-ok{background:#EDF7ED;color:#1e5c1e}
+.sync-err{background:#FDECEA;color:#7d1a1a}
+.sync-ing{background:#E8F2FC;color:#1a4f80}
+.sync-idle{background:var(--bg);color:var(--text3)}
+.sync-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sync-dot-ok{background:#1e5c1e}
+.sync-dot-err{background:#7d1a1a}
+.sync-dot-ing{background:#1a4f80;animation:pulse .8s infinite alternate}
+.sync-dot-idle{background:var(--text3)}
+@keyframes pulse{from{opacity:.4}to{opacity:1}}
+.sb-sync{padding:8px 20px 14px;font-size:11px;display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.5);cursor:pointer}
+.sb-sync:hover{color:rgba(255,255,255,.8)}
+.sb-sync-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+.sb-sync-dot.ok{background:#4CAF50}
+.sb-sync-dot.err{background:#ef5350}
+.sb-sync-dot.ing{background:#64B5F6;animation:pulse .8s infinite alternate}
+/* FLASHCARDS */
+.fc-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.fc-tab{padding:8px 18px;font-size:13px;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;font-weight:500;transition:all .15s}
+.fc-tab:hover{color:var(--text)}
+.fc-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+/* Flip card */
+.fc-scene{width:100%;perspective:1200px;margin-bottom:8px;display:flex;justify-content:center}
+.fc-card-wrap{
+  width:340px;height:480px;
+  position:relative;transform-style:preserve-3d;
+  transition:transform .55s cubic-bezier(.4,0,.2,1);
+  cursor:pointer;flex-shrink:0;
+}
+.fc-card-wrap.flipped{transform:rotateY(180deg)}
+.fc-face{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 28px;text-align:center;
+  box-shadow:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.08);
+  overflow:hidden;position:absolute;
+}
+.fc-front{background:#fff;border:2px solid #d0d8e8;}
+.fc-back{background:#F0F7FF;border:2px solid #90b8df;transform:rotateY(180deg);}
+/* Label acima da carta */
+.fc-face-label{display:none}
+.fc-above-label{text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);opacity:.7;margin-bottom:8px}
+.fc-face-text{font-size:16px;line-height:1.65;color:var(--text);font-weight:500;z-index:1;max-height:260px;overflow-y:auto}
+.fc-face-hint{font-size:11px;color:var(--text3);margin-top:18px;z-index:1;opacity:.7}
+/* Imagem draggável dentro da carta */
+.fc-img-drag-wrap{position:absolute;width:280px;height:160px;overflow:hidden;border-radius:10px;cursor:grab;background:rgba(0,0,0,.04);border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.08);user-select:none}
+.fc-img-drag-wrap:active{cursor:grabbing}
+.fc-img-drag-wrap img{width:100%;height:100%;object-fit:contain;pointer-events:none;display:block}
+.fc-drag-hint{position:absolute;bottom:4px;right:6px;font-size:9px;color:rgba(0,0,0,.35);pointer-events:none;font-style:italic}
+/* Rating buttons */
+.fc-ratings{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.fc-rate-btn{border-radius:8px;padding:10px 6px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid;text-align:center;transition:all .15s;font-family:inherit}
+.fc-rate-btn:hover{opacity:.85;transform:translateY(-1px)}
+.fc-rate-0{background:#FDECEA;color:#7d1a1a;border-color:#f0a0a0}
+.fc-rate-1{background:#FFF8E6;color:#7a4a00;border-color:#FAC775}
+.fc-rate-2{background:#EDF7ED;color:#1e5c1e;border-color:#93d093}
+.fc-rate-3{background:#E8F2FC;color:#1a4f80;border-color:#90bbec}
+.fc-progress-bar{height:6px;background:var(--bg);border-radius:3px;margin-bottom:16px;overflow:hidden}
+.fc-progress-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .3s}
+.fc-counter{display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:12px}
+/* Card list */
+.fc-list-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px}
+.fc-list-front{font-size:13px;font-weight:500;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fc-list-meta{font-size:11px;color:var(--text3);flex-shrink:0}
+.fc-badge{border-radius:20px;padding:2px 8px;font-size:10px;font-weight:600}
+.fc-badge-new{background:#E8F2FC;color:#1a4f80}
+.fc-badge-learn{background:#FFF8E6;color:#7a4a00}
+.fc-badge-review{background:#EDF7ED;color:#1e5c1e}
+.fc-badge-due{background:#FDECEA;color:#7d1a1a}
+/* Stats row */
+.fc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.fc-stat{background:var(--bg);border-radius:8px;padding:12px;text-align:center}
+.fc-stat-val{font-size:22px;font-weight:700}
+.fc-stat-label{font-size:11px;color:var(--text3);margin-top:2px}
+/* Session done */
+.fc-done{text-align:center;padding:32px 16px}
+.fc-done-icon{font-size:60px;margin-bottom:12px}
+.fc-done-title{font-size:22px;font-weight:700;margin-bottom:6px}
+.fc-done-sub{font-size:14px;color:var(--text2);margin-bottom:20px}
+.fc-img-wrap{margin:10px 0;text-align:center}
+.fc-img-wrap img{max-width:100%;max-height:220px;border-radius:8px;border:1px solid var(--border);object-fit:contain;cursor:pointer}
+.fc-img-wrap img:hover{opacity:.9}
+.fc-capture-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.fc-thumb{width:64px;height:40px;object-fit:cover;border-radius:6px;border:1.5px solid var(--blue);cursor:pointer}
+.fc-img-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:3000;align-items:center;justify-content:center;cursor:zoom-out}
+.fc-img-lightbox.show{display:flex}
+.fc-img-lightbox img{max-width:92vw;max-height:92vh;border-radius:10px;object-fit:contain}
+/* HEATMAP */
+.heatmap-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.heatmap-nav{display:flex;align-items:center;gap:10px}
+.heatmap-nav button{border:1px solid var(--border);background:var(--surface);border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.heatmap-nav button:hover{background:var(--bg)}
+.heatmap-title{font-size:15px;font-weight:600;min-width:150px;text-align:center}
+.heatmap-legend{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3)}
+.heatmap-legend-cells{display:flex;gap:3px}
+.heatmap-legend-cell{width:12px;height:12px;border-radius:2px}
+.heatmap-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.heatmap-dow span{text-align:center;font-size:10px;color:var(--text3);font-weight:600}
+.heatmap-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.hm-cell{aspect-ratio:1;border-radius:4px;cursor:default;position:relative;transition:transform .1s}
+.hm-cell:hover{transform:scale(1.15);z-index:1}
+.hm-cell.empty{background:transparent;cursor:default}
+.hm-cell.today{outline:2px solid var(--blue);outline-offset:1px}
+.hm-tooltip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;border-radius:6px;padding:5px 9px;font-size:11px;white-space:nowrap;pointer-events:none;display:none;z-index:10}
+.hm-cell:hover .hm-tooltip{display:block}
+/* RPG */
+.rpg-sidebar{padding:14px 20px;border-top:1px solid rgba(255,255,255,.12)}
+.rpg-char{font-size:28px;display:block;text-align:center;margin-bottom:4px;line-height:1}
+.rpg-lvl-name{text-align:center;font-size:12px;font-weight:700;color:#fff;letter-spacing:.5px}
+.rpg-lvl-num{text-align:center;font-size:10px;color:rgba(255,255,255,.5);margin-bottom:6px}
+.rpg-xp-track{height:6px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;margin-bottom:3px}
+.rpg-xp-fill{height:100%;border-radius:3px;background:var(--amber);transition:width .5s}
+.rpg-xp-label{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.45)}
+/* RPG card no painel */
+.rpg-card-hero{display:flex;align-items:center;gap:20px;padding:4px 0 12px}
+.rpg-avatar{font-size:56px;line-height:1;flex-shrink:0}
+.rpg-info{flex:1}
+.rpg-info-lvl{font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.rpg-info-name{font-size:24px;font-weight:700;margin:2px 0}
+.rpg-info-desc{font-size:12px;color:var(--text2);margin-bottom:10px}
+.rpg-bar-wrap{margin-bottom:4px}
+.rpg-bar-track{height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+.rpg-bar-fill{height:100%;border-radius:5px;transition:width .6s}
+.rpg-bar-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:3px}
+.rpg-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.rpg-stat{background:var(--bg);border-radius:8px;padding:10px;text-align:center}
+.rpg-stat-val{font-size:18px;font-weight:700}
+.rpg-stat-label{font-size:11px;color:var(--text3);margin-top:2px}
+.rpg-achievements{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ach{border-radius:8px;padding:8px 12px;font-size:12px;display:inline-flex;align-items:center;gap:6px;border:1px solid}
+.ach.on{background:#FFF8E6;border-color:#FAC775;color:#7a4a00}
+.ach.off{background:var(--bg);border-color:var(--border);color:var(--text3);opacity:.55}
+/* Toast de level up */
+.lvlup-toast{position:fixed;top:24px;right:24px;background:#fff;border-radius:14px;padding:18px 24px;box-shadow:0 8px 40px rgba(0,0,0,.18);display:none;z-index:2000;border-left:5px solid var(--amber);max-width:320px;animation:slideIn .3s ease}
+.lvlup-toast.show{display:flex;align-items:center;gap:14px}
+@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+.lvlup-icon{font-size:40px;flex-shrink:0}
+.lvlup-title{font-size:13px;font-weight:700;color:var(--amber)}
+.lvlup-name{font-size:16px;font-weight:700;margin:2px 0}
+.lvlup-sub{font-size:12px;color:var(--text2)}
+/* SUBTÓPICOS */
+.subtop-area{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+.subtop-label{font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:500}
+.subtop-grid{display:flex;flex-wrap:wrap;gap:6px}
+.subtop-btn{border:1.5px solid var(--border);background:#fff;border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--text2);font-family:inherit;transition:all .15s;white-space:nowrap}
+.subtop-btn:hover{background:var(--bg)}
+.subtop-btn.active{font-weight:600}
+.subtop-btn.none{font-style:italic;color:var(--text3)}
+/* Subtópico no config */
+.subtop-man{background:var(--bg);border-radius:8px;padding:10px 12px;margin-top:8px}
+.subtop-man-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.subtop-man-row:last-child{margin-bottom:0}
+.subtop-name-inp{flex:1;padding:4px 8px;font-size:12px;border:1px solid var(--border);border-radius:6px;background:#fff;font-family:inherit;color:var(--text)}
+/* Barra de subtópico no progresso */
+.subtop-bars{padding-left:20px;margin-top:4px;margin-bottom:8px;display:none}
+.subtop-bars.open{display:block}
+.subtop-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.subtop-bar-label{font-size:11px;color:var(--text3);width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.subtop-bar-track{flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden}
+.subtop-bar-fill{height:100%;border-radius:3px}
+.subtop-bar-val{font-size:11px;color:var(--text3);width:50px;text-align:right;flex-shrink:0}
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+/* TOGGLE */
+.toggle-wrap{cursor:pointer}
+.toggle-track{width:40px;height:22px;background:#ccc;border-radius:11px;position:relative;transition:background .2s}
+.toggle-track.on{background:var(--blue)}
+.toggle-thumb{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle-track.on .toggle-thumb{left:20px}
+/* ALARM OVERLAY */
+.alarm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center}
+.alarm-overlay.show{display:flex}
+.alarm-box{background:#fff;border-radius:16px;padding:36px 40px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.25);max-width:380px;width:90%;animation:alarm-pulse 1s ease-in-out infinite alternate}
+@keyframes alarm-pulse{from{box-shadow:0 8px 40px rgba(13,79,139,.2)}to{box-shadow:0 8px 60px rgba(13,79,139,.5)}}
+.alarm-emoji{font-size:56px;display:block;margin-bottom:12px}
+.alarm-title{font-size:22px;font-weight:700;margin-bottom:6px;color:var(--blue)}
+.alarm-sub{font-size:14px;color:var(--text2);margin-bottom:20px}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo-area">
+    <div class="logo-row">
+      <div class="logo-icon">🛢️</div>
+      <div class="logo-text">
+        <h1>Petrobras Coach</h1>
+        <p>Técnico de Operações</p>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-item active" onclick="goView('timer')"><span class="nav-icon">⏱️</span> Timer</div>
+    <div class="nav-item" onclick="goView('painel')"><span class="nav-icon">📊</span> Painel</div>
+    <div class="nav-item" onclick="goView('simulado')"><span class="nav-icon">📝</span> Simulados</div>
+    <div class="nav-item" onclick="goView('progresso')"><span class="nav-icon">📈</span> Progresso</div>
+    <div class="nav-item" onclick="goView('config')"><span class="nav-icon">⚙️</span> Configurações</div>
+    <div class="nav-item" onclick="goView('flashcards')"><span class="nav-icon">🃏</span> Flashcards</div>
+  </div>
+  <div class="sidebar-stats">
+    <div class="ss-label">Hoje</div>
+    <div class="ss-value" id="sb-today">0h 00min</div>
+    <div class="ss-sub" id="sb-today-sub">Meta: 4h</div>
+    <div class="ss-bar"><div class="ss-fill" id="sb-bar" style="width:0%"></div></div>
+    <div class="countdown-mini" id="cd-mini" style="display:none">
+      <div class="cd-num" id="cd-num">—</div>
+      <div class="cd-label">dias para a prova</div>
+    </div>
+  </div>
+  <div class="sb-sync" id="sb-sync" onclick="goTab('config');goView('config')" title="Status da sincronização — clique para configurar">
+    <div class="sb-sync-dot idle" id="sb-sync-dot"></div>
+    <span id="sb-sync-label">Sync não configurado</span>
+  </div>
+  <div class="rpg-sidebar" id="rpg-sidebar">
+    <span class="rpg-char" id="rpg-char">🌱</span>
+    <div class="rpg-lvl-name" id="rpg-lvl-name">Recruta</div>
+    <div class="rpg-lvl-num" id="rpg-lvl-num">Nível 1</div>
+    <div class="rpg-xp-track"><div class="rpg-xp-fill" id="rpg-xp-fill" style="width:0%"></div></div>
+    <div class="rpg-xp-label"><span id="rpg-xp-cur">0 XP</span><span id="rpg-xp-next">100 XP</span></div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div id="install-bar" class="install-hint" style="display:none">
+    💡 Para usar como app: clique nos <b>três pontinhos</b> do navegador → <b>Instalar página</b> — fica com ícone na área de trabalho, sem barra do navegador.
+    <button onclick="document.getElementById('install-bar').style.display='none'">Entendi</button>
+  </div>
+
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="tb-title">Timer de Estudos</div>
+      <div class="topbar-sub" id="tb-sub">Selecione a matéria e inicie o cronômetro</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn sm" onclick="exportData()">💾 Exportar backup</button>
+      <button class="btn sm" onclick="document.getElementById('import-inp').click()">📂 Importar backup</button>
+      <input type="file" id="import-inp" accept=".json" style="display:none" onchange="importData(event)">
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- TIMER -->
+    <div class="view active" id="view-timer">
+
+      <!-- MENSAGEM DO DIA -->
+      <div id="msg-do-dia" style="background:linear-gradient(135deg,#0D4F8B,#185FA5);border-radius:10px;padding:16px 22px;margin-bottom:16px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+        <div style="font-size:32px;flex-shrink:0" id="msg-emoji">💪</div>
+        <div style="flex:1">
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Mensagem do dia</div>
+          <div style="font-size:14px;color:#fff;line-height:1.5;font-weight:500" id="msg-texto"></div>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.45);flex-shrink:0;text-align:right" id="msg-data"></div>
+      </div>
+
+      <div class="grid4" style="margin-bottom:16px">
+        <div class="card">
+          <div class="metric-label">Hoje</div>
+          <div class="metric-value" id="t-today">0h 00min</div>
+          <div class="streak" id="t-streak">🔥 0 dias</div>
+        </div>
+        <div class="card">
+          <div class="metric-label">Esta semana</div>
+          <div class="metric-value" id="t-week">0h 00min</div>
+          <div class="metric-sub" id="t-week-sub"></div>
+        </div>
+        <div class="card">
+          <div class="metric-label">Total acumulado</div>
+          <div class="metric-value" id="t-total">0h 00min</div>
+          <div class="metric-sub">desde o início</div>
+        </div>
+        <div class="card">
+          <div class="metric-label">Meta diária</div>
+          <div class="metric-value" id="t-goal-v">4h</div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:6px"><span id="t-pct">0%</span><span>da meta</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="t-bar" style="width:0%;background:var(--blue)"></div></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="sec-title">Matéria atual</div>
+          <div class="subj-grid" id="subj-grid"></div>
+          <div class="subtop-area" id="subtop-area" style="display:none">
+            <div class="subtop-label">📌 Subtópico <span style="font-weight:400;font-style:italic">(opcional)</span></div>
+            <div class="subtop-grid" id="subtop-grid"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="timer-wrap">
+            <div class="timer-display" id="tmr">00:00:00</div>
+          </div>
+          <div class="btn-row" style="justify-content:center;margin-top:16px">
+            <button class="btn primary" id="btn-play" onclick="toggleTimer()">▶ Iniciar</button>
+            <button class="btn" onclick="resetTimer()">↺ Resetar</button>
+          </div>
+
+          <!-- ALARME -->
+          <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div class="sec-title" style="margin-bottom:0">🔔 Alarme</div>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text2)">
+                <div class="toggle-wrap" onclick="toggleAlarm()">
+                  <div class="toggle-track" id="alarm-track">
+                    <div class="toggle-thumb" id="alarm-thumb"></div>
+                  </div>
+                </div>
+                <span id="alarm-status-label">Desativado</span>
+              </label>
+            </div>
+            <div id="alarm-config" style="display:none">
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <div>
+                  <div class="input-label">Horas</div>
+                  <input type="number" id="alarm-h" min="0" max="23" value="0" style="width:70px" oninput="onAlarmChange()">
+                </div>
+                <div>
+                  <div class="input-label">Minutos</div>
+                  <input type="number" id="alarm-m" min="0" max="59" value="25" style="width:70px" oninput="onAlarmChange()">
+                </div>
+                <div style="flex:1;min-width:140px">
+                  <div class="input-label">Som do alarme</div>
+                  <select id="alarm-sound" onchange="previewSound()">
+                    <option value="beep">Bip simples</option>
+                    <option value="double">Bip duplo</option>
+                    <option value="bell">Sino</option>
+                    <option value="urgent">Urgente</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="input-label">Volume</div>
+                  <input type="range" id="alarm-vol" min="0" max="100" value="80" style="width:80px;accent-color:var(--blue)">
+                </div>
+              </div>
+              <div style="margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+                  <input type="checkbox" id="alarm-repeat" style="accent-color:var(--blue)">
+                  Repetir alarme a cada
+                </label>
+                <input type="number" id="alarm-rep-min" min="1" max="120" value="25" style="width:65px">
+                <span style="font-size:13px;color:var(--text2)">minutos</span>
+                <button class="btn sm" onclick="previewSound()" style="margin-left:auto">🔊 Testar som</button>
+              </div>
+              <div id="alarm-next" style="margin-top:10px;font-size:12px;color:var(--text3)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="save-panel" style="display:none;margin-top:16px">
+        <div class="sec-title">Salvar sessão</div>
+        <div class="grid2" style="margin-bottom:14px">
+          <div>
+            <div class="input-label">Questões resolvidas</div>
+            <input type="number" id="inp-q" min="0" value="0" placeholder="0">
+          </div>
+          <div>
+            <div class="input-label">Acertos</div>
+            <input type="number" id="inp-a" min="0" value="0" placeholder="0">
+          </div>
+        </div>
+        <div class="input-label" style="margin-bottom:8px">Qualidade da sessão</div>
+        <div class="star-row" id="stars"></div>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn success" onclick="saveSession()">✓ Salvar sessão</button>
+          <span style="font-size:12px;color:var(--text3)" id="save-time-label"></span>
+        </div>
+      </div>
+    <!-- REGISTRO MANUAL -->
+    <div class="card" style="margin-top:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <div>
+          <div class="sec-title" style="margin-bottom:2px">📋 Registrar sessão manualmente</div>
+          <div style="font-size:12px;color:var(--text3)">Para quando você estudou sem o cronômetro aberto — transporte, apostila impressa, videoaula, etc.</div>
+        </div>
+        <button class="btn sm" onclick="toggleManual()" id="btn-manual-toggle" style="flex-shrink:0">+ Adicionar sessão</button>
+      </div>
+      <div id="manual-form" style="display:none;border-top:1px solid var(--border);padding-top:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <div class="input-label">Data</div>
+            <input type="date" id="man-date">
+          </div>
+          <div>
+            <div class="input-label">Horário</div>
+            <input type="time" id="man-time">
+          </div>
+          <div>
+            <div class="input-label">Duração — horas</div>
+            <input type="number" id="man-h" min="0" max="23" value="0" placeholder="0">
+          </div>
+          <div>
+            <div class="input-label">Duração — minutos</div>
+            <input type="number" id="man-m" min="0" max="59" value="30" placeholder="30">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <div class="input-label">Questões resolvidas</div>
+            <input type="number" id="man-q" min="0" value="0" placeholder="0">
+          </div>
+          <div>
+            <div class="input-label">Acertos</div>
+            <input type="number" id="man-a" min="0" value="0" placeholder="0">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <div class="input-label">Matéria</div>
+            <select id="man-subj" onchange="renderManSubtopSelect()"></select>
+          </div>
+          <div>
+            <div class="input-label">Subtópico <span style="font-weight:400;font-style:italic">(opcional)</span></div>
+            <select id="man-subtop"><option value="">— Nenhum —</option></select>
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <div class="input-label" style="margin-bottom:8px">Qualidade da sessão</div>
+          <div class="star-row" id="man-stars"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn success" onclick="saveManualSession()">✓ Salvar sessão manual</button>
+          <button class="btn" onclick="toggleManual()">Cancelar</button>
+          <span id="man-msg" style="font-size:12px;color:var(--green);font-weight:500"></span>
+        </div>
+      </div>
+    </div>
+    </div><!-- /view-timer -->
+
+    <!-- PAINEL -->
+    <div class="view" id="view-painel">
+      <!-- RPG CARD -->
+      <div class="card" style="margin-bottom:16px" id="rpg-painel-card">
+        <div class="rpg-card-hero">
+          <div class="rpg-avatar" id="rpg-avatar-big">🌱</div>
+          <div class="rpg-info">
+            <div class="rpg-info-lvl" id="rpg-painel-lvlnum">NÍVEL 1</div>
+            <div class="rpg-info-name" id="rpg-painel-name">Recruta</div>
+            <div class="rpg-info-desc" id="rpg-painel-desc">Sua jornada começa aqui.</div>
+            <div class="rpg-bar-wrap">
+              <div class="rpg-bar-track"><div class="rpg-bar-fill" id="rpg-painel-bar" style="width:0%;background:#EF9F27"></div></div>
+              <div class="rpg-bar-labels"><span id="rpg-painel-xpcur">0 XP</span><span id="rpg-painel-xpnext">próximo nível: 100 XP</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="rpg-stats-grid">
+          <div class="rpg-stat"><div class="rpg-stat-val" id="rpg-stat-xp">0</div><div class="rpg-stat-label">XP total</div></div>
+          <div class="rpg-stat"><div class="rpg-stat-val" id="rpg-stat-streak">0🔥</div><div class="rpg-stat-label">Streak</div></div>
+          <div class="rpg-stat"><div class="rpg-stat-val" id="rpg-stat-sess">0</div><div class="rpg-stat-label">Sessões</div></div>
+          <div class="rpg-stat"><div class="rpg-stat-val" id="rpg-stat-sims">0</div><div class="rpg-stat-label">Simulados</div></div>
+        </div>
+        <div style="margin-top:12px"><div class="sec-title" style="margin-bottom:8px">Conquistas</div><div class="rpg-achievements" id="rpg-achievements"></div></div>
+      </div>
+      <div id="alerts-box" style="margin-bottom:8px"></div>
+      <div class="grid3" style="margin-bottom:16px">
+        <div class="card"><div class="metric-label">Dias para a prova</div><div class="metric-value" id="p-days" style="color:var(--blue)">—</div><div class="metric-sub" id="p-days-sub">Configure a data</div></div>
+        <div class="card"><div class="metric-label">Ritmo necessário</div><div class="metric-value" id="p-pace">—</div><div class="metric-sub" id="p-pace-sub">h/dia para atingir 600h</div></div>
+        <div class="card"><div class="metric-label">Taxa de acertos</div><div class="metric-value" id="p-acertos">—</div><div class="metric-sub">média geral</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="sec-title">Distribuição por peso do edital</div>
+          <p style="font-size:12px;color:var(--text3);margin-bottom:12px">Barra colorida = tempo estudado &nbsp;·&nbsp; Linha <b style="color:#EF9F27">laranja</b> = peso do edital &nbsp;·&nbsp; Clique em <b>▶ subtópicos</b> para detalhar</p>
+          <div id="edital-bars"></div>
+        </div>
+        <div class="card">
+          <div class="sec-title">Revisão espaçada</div>
+          <div id="spaced-alerts" class="scroll-box"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIMULADO -->
+    <div class="view" id="view-simulado">
+      <div class="grid2">
+        <div class="card">
+          <div class="sec-title">Registrar simulado</div>
+          <div style="margin-bottom:12px">
+            <div class="input-label">Data do simulado</div>
+            <input type="date" id="sim-date">
+          </div>
+          <div id="sim-subj-inputs"></div>
+          <div class="btn-row" style="margin-top:14px">
+            <button class="btn primary" onclick="addSimulado()">+ Registrar resultado</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-title">Evolução dos simulados</div>
+          <div class="chart-wrap"><canvas id="simChart"></canvas></div>
+          <div style="margin-top:16px" id="sim-list" class="scroll-box"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESSO -->
+    <div class="view" id="view-progresso">
+      <div class="grid4" style="margin-bottom:16px">
+        <div class="card"><div class="metric-label">Esta semana</div><div class="metric-value" id="pr-week">0h 00min</div></div>
+        <div class="card"><div class="metric-label">Este mês</div><div class="metric-value" id="pr-month">0h 00min</div></div>
+        <div class="card"><div class="metric-label">Sessões totais</div><div class="metric-value" id="pr-sess">0</div></div>
+        <div class="card"><div class="metric-label">Média por sessão</div><div class="metric-value" id="pr-avg">—</div></div>
+      </div>
+      <!-- HEATMAP -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="heatmap-header">
+          <div class="heatmap-nav">
+            <button onclick="heatmapNav(-1)">◀</button>
+            <div class="heatmap-title" id="hm-title">—</div>
+            <button onclick="heatmapNav(1)">▶</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <div id="hm-month-total" style="font-size:13px;color:var(--text2)"></div>
+            <div class="heatmap-legend">
+              <span>Menos</span>
+              <div class="heatmap-legend-cells">
+                <div class="heatmap-legend-cell" style="background:#eef2f7"></div>
+                <div class="heatmap-legend-cell" style="background:#b8d0e8"></div>
+                <div class="heatmap-legend-cell" style="background:#6fa8d0"></div>
+                <div class="heatmap-legend-cell" style="background:#2a7ab5"></div>
+                <div class="heatmap-legend-cell" style="background:#0D4F8B"></div>
+              </div>
+              <span>Mais</span>
+            </div>
+          </div>
+        </div>
+        <div class="heatmap-dow">
+          <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+        </div>
+        <div class="heatmap-grid" id="hm-grid"></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="sec-title">Últimos 14 dias</div>
+          <div class="chart-wrap"><canvas id="weekChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="sec-title">Tempo por matéria</div>
+          <div id="prog-bars" style="margin-top:4px"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="sec-title">Histórico de sessões</div>
+        <div class="scroll-box" id="sess-list"></div>
+      </div>
+    </div>
+
+    <!-- CONFIG -->
+    <div class="view" id="view-config">
+      <div class="grid2">
+        <div>
+          <div class="card">
+            <div class="sec-title">Data da prova</div>
+            <input type="date" id="exam-date-inp" onchange="saveExamDate(this.value)">
+          </div>
+          <div class="card" style="margin-top:16px">
+            <div class="sec-title">Meta diária (horas)</div>
+            <input type="number" id="goal-inp" min="1" max="16" value="4" onchange="saveGoal(this.value)" style="max-width:100px">
+          </div>
+          <div class="card" style="margin-top:16px">
+            <div class="sec-title">Peso das matérias no edital (%)</div>
+            <p style="font-size:12px;color:var(--text3);margin-bottom:12px">Soma atual: <b id="weight-sum">100</b>%</p>
+            <div id="weight-rows"></div>
+          </div>
+          <div class="card" style="margin-top:16px" id="sync-card">
+            <div class="sec-title">☁️ Sincronização automática — GitHub Gist</div>
+            <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">
+              Salva seus dados na nuvem automaticamente. Acesse de qualquer dispositivo com o mesmo token.
+            </p>
+            <div id="sync-status-area"></div>
+            <div style="margin-bottom:10px">
+              <div class="input-label" style="margin-bottom:5px">Token do GitHub <a href="https://github.com/settings/tokens/new?scopes=gist&description=PetrobrasCoach" target="_blank" style="font-size:11px;color:var(--blue);margin-left:6px">↗ Gerar token</a></div>
+              <div style="display:flex;gap:8px">
+                <input type="password" id="sync-token-inp" placeholder="ghp_xxxxxxxxxxxx" style="flex:1;font-family:monospace;font-size:13px">
+                <button class="btn primary sm" onclick="syncSave()">Salvar</button>
+              </div>
+              <div style="font-size:11px;color:var(--text3);margin-top:5px">Marque apenas o escopo <b>gist</b> ao gerar o token. Ele fica salvo só neste dispositivo.</div>
+            </div>
+            <div id="sync-gist-row" style="display:none;margin-bottom:10px">
+              <div class="input-label" style="margin-bottom:5px">ID do Gist <span style="font-size:11px;font-weight:400;color:var(--text3)">(preenchido automaticamente)</span></div>
+              <input type="text" id="sync-gist-inp" placeholder="Será criado automaticamente" style="font-family:monospace;font-size:12px" readonly>
+            </div>
+            <div class="btn-row">
+              <button class="btn success sm" id="sync-now-btn" onclick="syncNow()" style="display:none">🔄 Sincronizar agora</button>
+              <button class="btn sm" id="sync-pull-btn" onclick="syncPull()" style="display:none">⬇ Carregar da nuvem</button>
+              <button class="btn sm" onclick="syncClear()" style="color:var(--text3)">Desconectar</button>
+            </div>
+          </div>
+          <div class="card" style="margin-top:16px">
+            <div class="sec-title">Zona de perigo</div>
+            <button class="btn sm" id="clear-btn" onclick="clearAllStep()" style="color:var(--red);border-color:#f5b8b8">🗑 Apagar todos os dados</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-title">Gerenciar matérias</div>
+          <p style="font-size:12px;color:var(--text3);margin-bottom:12px">
+            Clique no nome para renomear · no círculo para trocar cor · em <b>Apagar</b> duas vezes para confirmar.
+          </p>
+          <div id="subj-manager"></div>
+          <div class="divider"></div>
+          <div class="sec-title">Adicionar nova matéria</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <input type="text" id="new-subj-name" placeholder="Nome da matéria" style="flex:1">
+            <button class="btn primary sm" onclick="addSubject()">+ Adicionar</button>
+          </div>
+          <div class="input-label" style="margin-bottom:6px">Cor</div>
+          <div class="color-picker" style="padding-left:0" id="new-subj-colors"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLASHCARDS -->
+    <div class="view" id="view-flashcards">
+      <div class="fc-tabs">
+        <div class="fc-tab active" id="fctab-estudar" onclick="fcGoTab('estudar')">📖 Estudar</div>
+        <div class="fc-tab" id="fctab-criar" onclick="fcGoTab('criar')">✏️ Criar carta</div>
+        <div class="fc-tab" id="fctab-gerenciar" onclick="fcGoTab('gerenciar')">📚 Gerenciar</div>
+      </div>
+
+      <!-- ESTUDAR -->
+      <div id="fcview-estudar">
+        <div class="fc-stats">
+          <div class="fc-stat"><div class="fc-stat-val" id="fc-stat-due" style="color:var(--red)">0</div><div class="fc-stat-label">Para revisar hoje</div></div>
+          <div class="fc-stat"><div class="fc-stat-val" id="fc-stat-new" style="color:var(--blue)">0</div><div class="fc-stat-label">Novas</div></div>
+          <div class="fc-stat"><div class="fc-stat-val" id="fc-stat-total">0</div><div class="fc-stat-label">Total de cartas</div></div>
+          <div class="fc-stat"><div class="fc-stat-val" id="fc-stat-mastered" style="color:var(--green)">0</div><div class="fc-stat-label">Dominadas</div></div>
+        </div>
+        <div id="fc-study-area">
+          <div class="card" style="text-align:center;padding:40px">
+            <div style="font-size:48px;margin-bottom:12px">🃏</div>
+            <div style="font-size:16px;font-weight:600;margin-bottom:6px">Nenhuma carta para revisar agora</div>
+            <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Crie cartas na aba <b>Criar carta</b> ou volte mais tarde para as revisões agendadas.</div>
+            <button class="btn primary" onclick="fcGoTab('criar')">+ Criar primeira carta</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRIAR -->
+      <div id="fcview-criar" style="display:none">
+        <div class="card">
+          <div class="sec-title">Nova carta</div>
+          <div style="margin-bottom:12px">
+            <div class="input-label">Frente — pergunta ou termo</div>
+            <textarea id="fc-new-front" rows="3" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;resize:vertical;color:var(--text)" placeholder="Ex: O que é destilação fracionada?"></textarea>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap">
+              <span style="font-size:12px;color:var(--text3)">📋 Cole um print com <kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:11px">Ctrl+V</kbd> dentro do campo acima</span>
+              <label class="btn sm" style="cursor:pointer;margin-left:auto">📁 Upload <input type="file" accept="image/*" style="display:none" onchange="fcUploadImage(event,'front')"></label>
+            </div>
+            <div id="fc-front-img-preview" style="display:none;margin-top:8px;position:relative;display:none">
+              <img id="fc-front-thumb" style="max-height:120px;max-width:100%;border-radius:8px;border:1.5px solid var(--blue);object-fit:contain;cursor:pointer" onclick="fcOpenLightbox(this.src)" alt="Print da frente">
+              <button type="button" onclick="fcClearImage('front')" style="position:absolute;top:4px;right:4px;border:none;background:rgba(0,0,0,.55);color:#fff;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div class="input-label">Verso — resposta ou definição</div>
+            <textarea id="fc-new-back" rows="4" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;resize:vertical;color:var(--text)" placeholder="Ex: Técnica de separação de misturas baseada nos diferentes pontos de ebulição dos componentes..."></textarea>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap">
+              <span style="font-size:12px;color:var(--text3)">📋 Cole um print com <kbd style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:11px">Ctrl+V</kbd> dentro do campo acima</span>
+              <label class="btn sm" style="cursor:pointer;margin-left:auto">📁 Upload <input type="file" accept="image/*" style="display:none" onchange="fcUploadImage(event,'back')"></label>
+            </div>
+            <div id="fc-back-img-preview" style="display:none;margin-top:8px;position:relative">
+              <img id="fc-back-thumb" style="max-height:120px;max-width:100%;border-radius:8px;border:1.5px solid var(--blue);object-fit:contain;cursor:pointer" onclick="fcOpenLightbox(this.src)" alt="Print do verso">
+              <button type="button" onclick="fcClearImage('back')" style="position:absolute;top:4px;right:4px;border:none;background:rgba(0,0,0,.55);color:#fff;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+            <div>
+              <div class="input-label">Matéria</div>
+              <select id="fc-new-subj" onchange="fcRenderSubtopSel()"></select>
+            </div>
+            <div>
+              <div class="input-label">Subtópico (opcional)</div>
+              <select id="fc-new-subtop"><option value="">— Nenhum —</option></select>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn success" onclick="fcCreateCard()">✓ Salvar carta</button>
+            <span id="fc-create-msg" style="font-size:13px;color:var(--green);font-weight:500"></span>
+          </div>
+        </div>
+        <!-- Preview -->
+        <div class="card" style="margin-top:16px">
+          <div class="sec-title">Preview <span style="font-size:11px;font-weight:400;color:var(--text3)">— clique na carta para virar · arraste a imagem para reposicioná-la</span></div>
+          <div id="fc-preview-label" class="fc-above-label">Frente</div>
+          <div class="fc-scene" style="margin-bottom:0">
+            <div class="fc-card-wrap" id="fc-preview-wrap" onclick="fcPreviewFlip(event)">
+              <div class="fc-face fc-front">
+                <div class="fc-img-drag-wrap" id="prev-img-front-wrap" style="display:none;left:30px;top:30px" onclick="event.stopPropagation()">
+                  <img id="prev-img-front" draggable="false" src="" alt="">
+                  <div class="fc-drag-hint">arraste para mover</div>
+                </div>
+                <div class="fc-face-text" id="fc-preview-front" style="color:var(--text3);font-style:italic">Digite a frente da carta acima...</div>
+                <div class="fc-face-hint">Clique para virar</div>
+              </div>
+              <div class="fc-face fc-back">
+                <div class="fc-img-drag-wrap" id="prev-img-back-wrap" style="display:none;left:30px;top:30px" onclick="event.stopPropagation()">
+                  <img id="prev-img-back" draggable="false" src="" alt="">
+                  <div class="fc-drag-hint">arraste para mover</div>
+                </div>
+                <div class="fc-face-text" id="fc-preview-back" style="color:var(--text3);font-style:italic">Digite o verso da carta acima...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GERENCIAR -->
+      <div id="fcview-gerenciar" style="display:none">
+        <div class="card" style="margin-bottom:12px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <select id="fc-filter-subj" onchange="fcRenderList()" style="flex:1;min-width:160px">
+              <option value="">Todas as matérias</option>
+            </select>
+            <input type="text" id="fc-search" placeholder="🔍 Buscar..." oninput="fcRenderList()" style="flex:2;min-width:180px">
+          </div>
+        </div>
+        <div id="fc-list-area"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- IMAGE LIGHTBOX -->
+<div class="fc-img-lightbox" id="fc-lightbox" onclick="this.classList.remove('show')">
+  <img id="fc-lightbox-img" src="" alt="Print ampliado">
+</div>
+
+<!-- LEVEL UP TOAST -->
+<div class="lvlup-toast" id="lvlup-toast">
+  <div class="lvlup-icon" id="lvlup-icon">⚔️</div>
+  <div>
+    <div class="lvlup-title">⬆ LEVEL UP!</div>
+    <div class="lvlup-name" id="lvlup-name">Aprendiz</div>
+    <div class="lvlup-sub" id="lvlup-sub">Nível 2 desbloqueado!</div>
+  </div>
+</div>
+
+<!-- ALARM OVERLAY -->
+<div class="alarm-overlay" id="alarm-overlay">
+  <div class="alarm-box">
+    <span class="alarm-emoji">⏰</span>
+    <div class="alarm-title" id="alarm-box-title">Tempo atingido!</div>
+    <div class="alarm-sub" id="alarm-box-sub">Seu alarme foi disparado.</div>
+    <button class="btn primary" style="width:100%;justify-content:center;font-size:15px" onclick="dismissAlarm()">✓ Ok, entendi!</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ======== CONSTANTS ========
+const PALETTE=['#0D4F8B','#1D9E75','#854F0B','#993556','#534AB7','#A32D2D','#185FA5','#5F5E5A','#0D6B3E','#BA7517','#3B6D11','#639922','#B56DAC','#2E7D7D'];
+const DEF_SUBJ=[
+  {key:'portugues',name:'Língua Portuguesa',color:'#0D4F8B'},
+  {key:'matematica',name:'Matemática / R. Lógico',color:'#1D9E75'},
+  {key:'informatica',name:'Informática',color:'#854F0B'},
+  {key:'especificos',name:'Conhecimentos Espec.',color:'#993556'},
+  {key:'quimica',name:'Química / Física',color:'#534AB7'},
+  {key:'legislacao',name:'Legislação',color:'#A32D2D'},
+  {key:'seguranca',name:'Segurança / Meio Amb.',color:'#185FA5'},
+  {key:'atualidades',name:'Atualidades',color:'#5F5E5A'},
+];
+const DEF_WEIGHTS={portugues:15,matematica:15,informatica:10,especificos:30,quimica:10,legislacao:10,seguranca:5,atualidades:5};
+const GOAL_TOTAL_H=600;
+const VIEWS={timer:'Timer de Estudos',painel:'Painel de Controle',simulado:'Simulados',progresso:'Progresso',config:'Configurações',flashcards:'Flashcards — Repetição Espaçada'};
+const VSUBS={timer:'Selecione a matéria e inicie o cronômetro',painel:'Acompanhe seu ritmo e alertas',simulado:'Registre e acompanhe seus simulados',progresso:'Histórico detalhado de estudos',config:'Ajuste matérias, metas e preferências',flashcards:'Cartas de memorização com algoritmo SM-2 (igual ao Anki)'};
+
+// ======== STATE ========
+let state={sessions:[],simulados:[],flashcards:[],goalHours:4,streak:0,lastStudyDate:null,examDate:null,weights:{...DEF_WEIGHTS},subjects:[...DEF_SUBJ]};
+let timerSec=0,timerStartAt=0,running=false,timerInt=null,selSubject='portugues',selSubtopic=null,starRating=3;
+let newColor=PALETTE[0];
+let pendingDelKey=null,pendingDelTimer=null;
+let clearStep=0,clearStepTimer=null;
+let weekChartI=null,simChartI=null;
+let heatmapYear=new Date().getFullYear(),heatmapMonth=new Date().getMonth();
+// alarm
+let alarmEnabled=false,alarmNextAt=-1,audioCtx=null;
+
+function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function playSound(type,vol){
+  const ctx=getAudioCtx();const g=ctx.createGain();g.connect(ctx.destination);const v=(vol||80)/100*0.6;
+  const note=(freq,t,dur)=>{const o=ctx.createOscillator();o.connect(g);o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(0,ctx.currentTime+t);g.gain.linearRampToValueAtTime(v,ctx.currentTime+t+0.01);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+dur-0.04);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+dur);};
+  if(type==='beep'){note(880,0,.6);}
+  else if(type==='double'){note(880,0,.3);note(1100,.4,.3);}
+  else if(type==='bell'){note(523,0,.1);note(1047,.05,.9);note(784,.1,.7);}
+  else if(type==='urgent'){[0,.25,.5,.75,1].forEach((t,i)=>note(i%2?1200:800,t,.2));}
+}
+function previewSound(){
+  try{getAudioCtx().resume().then(()=>playSound(document.getElementById('alarm-sound')?.value||'beep',parseInt(document.getElementById('alarm-vol')?.value||80)));}catch(e){}
+}
+function alarmSecs(){const h=parseInt(document.getElementById('alarm-h')?.value)||0,m=parseInt(document.getElementById('alarm-m')?.value)||0;return h*3600+m*60;}
+function alarmRepSecs(){return(parseInt(document.getElementById('alarm-rep-min')?.value)||25)*60;}
+function computeNextAlarm(){
+  if(!alarmEnabled){alarmNextAt=-1;updateAlarmLabel();return;}
+  const first=alarmSecs();if(first<=0){alarmNextAt=-1;updateAlarmLabel();return;}
+  if(timerSec<first){alarmNextAt=first;}
+  else if(document.getElementById('alarm-repeat')?.checked){alarmNextAt=first+Math.ceil((timerSec-first+1)/alarmRepSecs())*alarmRepSecs();}
+  else{alarmNextAt=-1;}
+  updateAlarmLabel();
+}
+function updateAlarmLabel(){updateAlarmLabelAt(getCurrentSec());}
+function updateAlarmLabelAt(s){
+  const el=document.getElementById('alarm-next');if(!el)return;
+  el.textContent=(alarmEnabled&&alarmNextAt>s)?`⏰ Próximo alarme em ${fmtTime(alarmNextAt-s)}`:'';
+}
+function checkAlarm(){checkAlarmAt(getCurrentSec());}
+function checkAlarmAt(s){
+  if(!alarmEnabled||alarmNextAt<=0||s<alarmNextAt)return;
+  fireAlarm();
+  if(document.getElementById('alarm-repeat')?.checked){alarmNextAt+=alarmRepSecs();}else{alarmNextAt=-1;}
+}
+function fireAlarm(){
+  const s=document.getElementById('alarm-sound')?.value||'beep',v=parseInt(document.getElementById('alarm-vol')?.value||80);
+  [0,800,1600].forEach(d=>setTimeout(()=>playSound(s,v),d));
+  const h=parseInt(document.getElementById('alarm-h')?.value)||0,m=parseInt(document.getElementById('alarm-m')?.value)||0;
+  document.getElementById('alarm-box-sub').textContent=`Você estudou ${h>0?h+'h ':''} ${m>0?m+'min':''} — hora de uma pausa!`;
+  document.getElementById('alarm-overlay').classList.add('show');
+}
+function dismissAlarm(){document.getElementById('alarm-overlay').classList.remove('show');updateAlarmLabel();}
+function togglePainelTops(subjKey){
+  const bars=document.getElementById('ptops_'+subjKey);
+  const btn=document.getElementById('pbtn_'+subjKey);
+  if(!bars)return;
+  const open=bars.classList.toggle('open');
+  if(btn){
+    const n=btn.textContent.match(/\d+/)?.[0]||'';
+    btn.textContent=(open?'▼ ':'▶ ')+n+' subtópico'+(n!=='1'?'s':'');
+  }
+}
+function toggleSubtopBars(subjKey){
+  const bars=document.getElementById('stbars_'+subjKey);
+  const btn=document.getElementById('stbtn_'+subjKey);
+  if(!bars)return;
+  const open=bars.classList.toggle('open');
+  if(btn)btn.textContent=open?'▼ subtópicos':'▶ subtópicos';
+}
+
+function toggleAlarm(){
+  alarmEnabled=!alarmEnabled;
+  document.getElementById('alarm-track').classList.toggle('on',alarmEnabled);
+  document.getElementById('alarm-status-label').textContent=alarmEnabled?'Ativado':'Desativado';
+  document.getElementById('alarm-config').style.display=alarmEnabled?'block':'none';
+  computeNextAlarm();
+}
+function onAlarmChange(){computeNextAlarm();}
+
+// ======== CORREÇÃO DE THROTTLING ========
+// Usa o relógio real em vez de contar tiques do setInterval.
+// Assim o cronômetro continua correto mesmo quando a aba fica em segundo plano.
+function getCurrentSec(){
+  if(!running) return timerSec;
+  return Math.floor((Date.now() - timerStartAt) / 1000);
+}
+// Quando o usuário volta para a aba, força atualização imediata do display
+document.addEventListener('visibilitychange', () => {
+  if(!document.hidden && running){
+    const s = getCurrentSec();
+    document.getElementById('tmr').textContent = fmtTime(s);
+    checkAlarmAt(s);
+    updateAlarmLabelAt(s);
+    updateSidebarStats();
+  }
+});
+
+// ======== REGISTRO MANUAL ========
+let manStarRating = 3;
+
+function toggleManual(){
+  const form = document.getElementById('manual-form');
+  const btn  = document.getElementById('btn-manual-toggle');
+  const open = form.style.display === 'none';
+  form.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? '✕ Fechar' : '+ Adicionar sessão';
+  if(open){
+    // preenche data e hora atuais como padrão
+    const now = new Date();
+    const dateEl = document.getElementById('man-date');
+    const timeEl = document.getElementById('man-time');
+    if(dateEl && !dateEl.value) dateEl.value = today();
+    if(timeEl && !timeEl.value) timeEl.value = now.toTimeString().slice(0,5);
+    renderManSubjSelect();
+    renderManStars();
+    document.getElementById('man-msg').textContent = '';
+  }
+}
+
+function renderManSubjSelect(){
+  const sel = document.getElementById('man-subj');
+  if(!sel) return;
+  sel.innerHTML = subjects().map(s => `<option value="${s.key}">${s.name}</option>`).join('');
+  renderManSubtopSelect();
+}
+function renderManSubtopSelect(){
+  const sel  = document.getElementById('man-subj');
+  const ssel = document.getElementById('man-subtop');
+  if(!sel||!ssel) return;
+  const sub = subjects().find(s=>s.key===sel.value);
+  const tops = (sub&&sub.subtopics&&sub.subtopics.length)?sub.subtopics:[];
+  ssel.innerHTML = '<option value="">— Nenhum —</option>'+tops.map(t=>`<option value="${t.key}">${t.name}</option>`).join('');
+}
+
+function renderManStars(){
+  const el = document.getElementById('man-stars');
+  if(!el) return;
+  el.innerHTML = Array.from({length:5}, (_,i) =>
+    `<span class="star ${i < manStarRating ? 'on' : ''}" onclick="setManStar(${i+1})">★</span>`
+  ).join('');
+}
+function setManStar(n){ manStarRating = n; renderManStars(); }
+
+function saveManualSession(){
+  const h   = parseInt(document.getElementById('man-h')?.value) || 0;
+  const m   = parseInt(document.getElementById('man-m')?.value) || 0;
+  const sec = h * 3600 + m * 60;
+  if(sec < 60){
+    document.getElementById('man-msg').textContent = '⚠ Informe ao menos 1 minuto.';
+    document.getElementById('man-msg').style.color = 'var(--red)';
+    return;
+  }
+  const dateVal = document.getElementById('man-date')?.value || today();
+  const timeVal = document.getElementById('man-time')?.value || '00:00';
+  const q   = parseInt(document.getElementById('man-q')?.value) || 0;
+  const a   = Math.min(parseInt(document.getElementById('man-a')?.value) || 0, q);
+  const key = document.getElementById('man-subj')?.value || subjects()[0]?.key;
+  const sub = subj(key);
+  const stKey = document.getElementById('man-subtop')?.value||null;
+  const stObj2 = stKey?(subjects().find(s=>s.key===key)?.subtopics||[]).find(t=>t.key===stKey):null;
+
+  state.sessions.push({
+    id: Date.now(),
+    subject: sub.key, subjectName: sub.name, color: sub.color,
+    seconds: sec, date: dateVal, time: timeVal,
+    quality: manStarRating, questoes: q, acertos: a,
+    subtopic: stObj2?.key||null, subtopicName: stObj2?.name||null,
+    manual: true
+  });
+
+  // Ordena sessões por data desc
+  state.sessions.sort((a,b) => b.date.localeCompare(a.date) || b.id - a.id);
+
+  // Atualiza streak se a sessão for de hoje
+  if(dateVal === today()) updateStreak();
+  saveState();
+
+  // Feedback e reset do form
+  document.getElementById('man-msg').textContent = `✓ ${fmtH(sec)} registrados em ${sub.name}!`;
+  document.getElementById('man-msg').style.color = 'var(--green)';
+  document.getElementById('man-h').value = 0;
+  document.getElementById('man-m').value = 30;
+  document.getElementById('man-q').value = 0;
+  document.getElementById('man-a').value = 0;
+  manStarRating = 3; renderManStars();
+  renderAll();
+  setTimeout(() => {
+    document.getElementById('man-msg').textContent = '';
+  }, 3000);
+}
+
+// ======== STORAGE ========
+function loadState(){
+  try{
+    const raw=localStorage.getItem('petrobras_coach_v1');
+    if(raw){const d=JSON.parse(raw);state={...state,...d};if(!state.subjects||!state.subjects.length)state.subjects=[...DEF_SUBJ];if(!state.weights)state.weights={...DEF_WEIGHTS};}
+  }catch(e){}
+  if(!selSubject||!subjects().find(s=>s.key===selSubject))selSubject=subjects()[0]?.key||'';
+  // Migração: corrige sessões com data futura causadas pelo bug UTC
+  // Sessões estudadas à noite eram salvas com a data do dia seguinte (UTC)
+  const t=today();
+  let migrated=false;
+  (state.sessions||[]).forEach(s=>{
+    if(s.date>t){s.date=t;migrated=true;}
+  });
+  if(migrated)saveState();
+}
+function saveState(){
+  try{localStorage.setItem('petrobras_coach_v1',JSON.stringify(state));}catch(e){}
+  scheduleSyncAfterSave();
+}
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='petrobras_backup_'+today()+'.json';a.click();
+}
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);state={...state,...d};saveState();renderAll();alert('Backup importado com sucesso!');}catch(ex){alert('Arquivo inválido.');}};
+  r.readAsText(file);e.target.value='';
+}
+
+// ======== HELPERS ========
+function subjects(){return state.subjects&&state.subjects.length?state.subjects:DEF_SUBJ;}
+function subj(key){return subjects().find(s=>s.key===key)||{key,name:key,color:'#888'};}
+function pad(n){return String(n).padStart(2,'0')}
+function fmtTime(s){return`${pad(Math.floor(s/3600))}:${pad(Math.floor((s%3600)/60))}:${pad(s%60)}`}
+function fmtH(s){return`${Math.floor(s/3600)}h ${pad(Math.floor((s%3600)/60))}min`}
+function localDateStr(d){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function parseLocalDate(str){
+  // Parseia 'YYYY-MM-DD' como data LOCAL, evitando o problema do UTC do JavaScript
+  const [y,m,d]=str.split('-').map(Number);
+  return new Date(y,m-1,d);
+}
+function today(){return localDateStr(new Date());}
+function daysAgo(n){return localDateStr(new Date(Date.now()-n*86400000));}
+function uid(){return 's'+Date.now()+Math.random().toString(36).slice(2,6)}
+function monthStart(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-01`;}
+
+// ======== TIMER ========
+function toggleTimer(){
+  if(!running){
+    try{getAudioCtx().resume();}catch(e){}
+    running=true;
+    // Marca o instante de início descontando os segundos já acumulados (ao retomar)
+    timerStartAt = Date.now() - timerSec * 1000;
+    computeNextAlarm();
+    timerInt=setInterval(()=>{
+      const s = getCurrentSec();
+      document.getElementById('tmr').textContent=fmtTime(s);
+      document.getElementById('tmr').className='timer-display running';
+      checkAlarmAt(s);updateAlarmLabelAt(s);updateSidebarStats();
+    },500); // 500ms para atualização mais suave após voltar do background
+    document.getElementById('btn-play').textContent='⏸ Pausar';
+    document.getElementById('save-panel').style.display='block';
+    document.getElementById('save-time-label').textContent='';
+  } else {
+    clearInterval(timerInt);
+    timerSec = getCurrentSec(); // salva os segundos reais acumulados
+    running=false;
+    document.getElementById('btn-play').textContent='▶ Retomar';
+  }
+}
+function resetTimer(){
+  clearInterval(timerInt);running=false;timerSec=0;timerStartAt=0;alarmNextAt=-1;
+  document.getElementById('tmr').textContent='00:00:00';
+  document.getElementById('tmr').className='timer-display';
+  document.getElementById('btn-play').textContent='▶ Iniciar';
+  document.getElementById('save-panel').style.display='none';
+  document.getElementById('alarm-next').textContent='';
+}
+function saveSession(){
+  if(getCurrentSec()<5)return;
+  const q=parseInt(document.getElementById('inp-q').value)||0;
+  const a=Math.min(parseInt(document.getElementById('inp-a').value)||0,q);
+  const sub=subj(selSubject);
+  const sessionSec=getCurrentSec();
+  const stObj=selSubtopic?(subjects().find(s=>s.key===selSubject)?.subtopics||[]).find(t=>t.key===selSubtopic):null;
+  state.sessions.unshift({id:Date.now(),subject:sub.key,subjectName:sub.name,color:sub.color,seconds:sessionSec,date:today(),time:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),quality:starRating,questoes:q,acertos:a,subtopic:stObj?.key||null,subtopicName:stObj?.name||null});
+  updateStreak();saveState();resetTimer();
+  document.getElementById('inp-q').value=0;document.getElementById('inp-a').value=0;
+  starRating=3;renderStars();renderAll();
+}
+function updateStreak(){
+  const t=today(),y=daysAgo(1);
+  if(state.lastStudyDate===t)return;
+  state.streak=state.lastStudyDate===y?(state.streak||0)+1:1;
+  state.lastStudyDate=t;
+}
+function deleteSession(id){state.sessions=state.sessions.filter(s=>s.id!==id);saveState();renderAll();}
+function setStar(n){starRating=n;renderStars();}
+
+// ======== SUBJECTS ========
+function addSubject(){
+  const el=document.getElementById('new-subj-name');
+  const name=el.value.trim();if(!name)return;
+  const key=uid();
+  state.subjects.push({key,name,color:newColor});
+  state.weights[key]=0;
+  el.value='';saveState();renderConfig();renderSubjGrid();
+}
+function renameSubject(key,name){
+  const s=state.subjects.find(s=>s.key===key);
+  if(s&&name.trim()){s.name=name.trim();state.sessions.forEach(ss=>{if(ss.subject===key)ss.subjectName=s.name;});}
+  saveState();renderSubjGrid();
+}
+function recolorSubject(key,color){
+  const s=state.subjects.find(s=>s.key===key);
+  if(s){s.color=color;state.sessions.forEach(ss=>{if(ss.subject===key)ss.color=color;});}
+  saveState();renderConfig();renderSubjGrid();
+}
+function deleteSubject(key){
+  if(subjects().length<=1){showTempMsg('delbtn_'+key,'Mínimo 1 matéria',1500);return;}
+  if(pendingDelKey===key){
+    clearTimeout(pendingDelTimer);
+    state.subjects=state.subjects.filter(s=>s.key!==key);
+    delete state.weights[key];
+    if(selSubject===key)selSubject=subjects()[0]?.key||'';
+    pendingDelKey=null;saveState();renderConfig();renderSubjGrid();
+  } else {
+    if(pendingDelKey){resetPendingDel();}
+    pendingDelKey=key;
+    const btn=document.getElementById('delbtn_'+key);
+    if(btn){btn.textContent='Confirmar?';btn.classList.add('danger');}
+    pendingDelTimer=setTimeout(()=>resetPendingDel(),3000);
+  }
+}
+function resetPendingDel(){
+  const old=pendingDelKey;pendingDelKey=null;clearTimeout(pendingDelTimer);
+  if(old){const btn=document.getElementById('delbtn_'+old);if(btn){btn.textContent='Apagar';btn.classList.remove('danger');}}
+}
+function showTempMsg(btnId,msg,dur){
+  const btn=document.getElementById(btnId);if(!btn)return;
+  const orig=btn.textContent;btn.textContent=msg;
+  setTimeout(()=>{btn.textContent=orig;},dur);
+}
+function openColorPicker(key){
+  const el=document.getElementById('cp_'+key);if(el)el.style.display=el.style.display==='none'?'flex':'none';
+}
+function toggleSubtopicMgr(key){
+  const el=document.getElementById('topmgr_'+key);
+  if(!el)return;
+  const open=el.style.display==='none';
+  el.style.display=open?'block':'none';
+}
+
+// ======== CONFIG ========
+function saveExamDate(v){state.examDate=v;saveState();renderAll();}
+function saveGoal(v){state.goalHours=Math.max(1,Math.min(16,parseInt(v)||4));saveState();renderAll();}
+function updateWeight(k,v){state.weights[k]=Math.max(0,parseInt(v)||0);saveState();updateWeightSum();}
+function updateWeightSum(){
+  const s=Object.values(state.weights).reduce((a,b)=>a+b,0);
+  const el=document.getElementById('weight-sum');
+  if(el){el.textContent=s;el.style.color=s===100?'var(--green)':'var(--red)';}
+}
+function clearAllStep(){
+  const btn=document.getElementById('clear-btn');
+  if(clearStep===0){
+    clearStep=1;btn.textContent='Confirmar? (clique de novo)';btn.classList.add('danger');
+    clearStepTimer=setTimeout(()=>{clearStep=0;btn.textContent='🗑 Apagar todos os dados';btn.classList.remove('danger');},3000);
+  } else {
+    clearTimeout(clearStepTimer);clearStep=0;
+    state={sessions:[],simulados:[],goalHours:4,streak:0,lastStudyDate:null,examDate:null,weights:{...DEF_WEIGHTS},subjects:[...DEF_SUBJ]};
+    selSubject='portugues';saveState();
+    btn.textContent='🗑 Apagar todos os dados';btn.classList.remove('danger');
+    renderAll();
+  }
+}
+
+// ======== SIMULADO ========
+function addSimulado(){
+  const d=document.getElementById('sim-date').value||today();
+  let total=0,acertos=0;
+  const subResults=subjects().map(s=>{
+    const ti=parseInt(document.getElementById('simq_'+s.key)?.value)||0;
+    const ai=parseInt(document.getElementById('sima_'+s.key)?.value)||0;
+    total+=ti;acertos+=Math.min(ai,ti);
+    return{key:s.key,name:s.name,total:ti,acertos:Math.min(ai,ti)};
+  }).filter(s=>s.total>0);
+  if(!total)return;
+  state.simulados.unshift({id:Date.now(),date:d,subResults,total,acertos,nota:Math.round((acertos/total)*100)});
+  saveState();renderSimulados();
+  subjects().forEach(s=>{['simq_','sima_'].forEach(p=>{const el=document.getElementById(p+s.key);if(el)el.value='';});});
+}
+function delSim(id){state.simulados=state.simulados.filter(s=>s.id!==id);saveState();renderSimulados();}
+
+// ======== NAVIGATION ========
+function goView(view){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach((el,i)=>el.classList.toggle('active',['timer','painel','simulado','progresso','config','flashcards'][i]===view));
+  document.getElementById('view-'+view).classList.add('active');
+  document.getElementById('tb-title').textContent=VIEWS[view];
+  document.getElementById('tb-sub').textContent=VSUBS[view];
+  if(view==='painel')renderPainel();
+  if(view==='simulado')renderSimulados();
+  if(view==='progresso')renderProgresso();
+  if(view==='config')renderConfig();
+  if(view==='flashcards')fcRenderAll();
+}
+
+// ======== RENDER ALL ========
+function renderAll(){
+  updateSidebarStats();renderTimerCard();renderSubjGrid();renderSubtopicGrid();renderStars();renderRPG();
+  const active=['painel','simulado','progresso','config'].find(v=>document.getElementById('view-'+v).classList.contains('active'));
+  if(active==='painel')renderPainel();
+  else if(active==='simulado')renderSimulados();
+  else if(active==='progresso')renderProgresso();
+  else if(active==='config')renderConfig();
+}
+
+function updateSidebarStats(){
+  const td=state.sessions.filter(s=>s.date===today()).reduce((a,s)=>a+s.seconds,0);
+  const pct=Math.min(100,Math.round((td/(state.goalHours*3600))*100));
+  document.getElementById('sb-today').textContent=fmtH(td);
+  document.getElementById('sb-today-sub').textContent=`Meta: ${state.goalHours}h`;
+  document.getElementById('sb-bar').style.width=pct+'%';
+  if(state.examDate){
+    const diff=Math.ceil((new Date(state.examDate+'T12:00:00')-Date.now())/86400000);
+    document.getElementById('cd-mini').style.display='block';
+    document.getElementById('cd-num').textContent=Math.max(0,diff);
+  } else document.getElementById('cd-mini').style.display='none';
+}
+
+function renderTimerCard(){
+  const td=state.sessions.filter(s=>s.date===today()).reduce((a,s)=>a+s.seconds,0);
+  const wd=Array.from({length:7},(_,i)=>daysAgo(6-i));
+  const ws=wd.reduce((a,d)=>a+state.sessions.filter(s=>s.date===d).reduce((b,s)=>b+s.seconds,0),0);
+  const tt=state.sessions.reduce((a,s)=>a+s.seconds,0);
+  const pct=Math.min(100,Math.round((td/(state.goalHours*3600))*100));
+  document.getElementById('t-today').textContent=fmtH(td);
+  document.getElementById('t-week').textContent=fmtH(ws);
+  document.getElementById('t-total').textContent=fmtH(tt);
+  document.getElementById('t-goal-v').textContent=state.goalHours+'h';
+  document.getElementById('t-pct').textContent=pct+'%';
+  document.getElementById('t-bar').style.width=pct+'%';
+  document.getElementById('t-streak').textContent=`🔥 ${state.streak||0} dia${(state.streak||0)!==1?'s':''}`;
+}
+
+function renderSubtopicGrid(){
+  const area=document.getElementById('subtop-area');
+  const grid=document.getElementById('subtop-grid');
+  if(!area||!grid)return;
+  const sub=subjects().find(s=>s.key===selSubject);
+  const tops=(sub&&sub.subtopics&&sub.subtopics.length)?sub.subtopics:[];
+  if(!tops.length){area.style.display='none';selSubtopic=null;return;}
+  area.style.display='block';
+  grid.innerHTML=
+    `<button class="subtop-btn${!selSubtopic?' active':''}" onclick="selSubtop(null)" style="${!selSubtopic?'border-color:'+sub.color+';color:'+sub.color+';background:'+sub.color+'12':''}">Geral</button>`+
+    tops.map(t=>`<button class="subtop-btn${selSubtopic===t.key?' active':''}" onclick="selSubtop('${t.key}')"
+      style="${selSubtopic===t.key?'border-color:'+sub.color+';color:'+sub.color+';background:'+sub.color+'12':''}">${t.name}</button>`).join('');
+}
+function selSubtop(k){selSubtopic=k;renderSubtopicGrid();}
+
+function renderSubjGrid(){
+  document.getElementById('subj-grid').innerHTML=subjects().map(s=>`
+    <button class="subj-btn ${s.key===selSubject?'active':''}" onclick="selSubj('${s.key}')"
+      style="${s.key===selSubject?'border-color:'+s.color+';color:'+s.color+';background:'+s.color+'12':''}">${s.name}</button>
+  `).join('');
+}
+function selSubj(k){selSubject=k;selSubtopic=null;renderSubjGrid();renderSubtopicGrid();}
+function renderStars(){
+  document.getElementById('stars').innerHTML=Array.from({length:5},(_,i)=>`<span class="star ${i<starRating?'on':''}" onclick="setStar(${i+1})">★</span>`).join('');
+}
+
+// ======== PAINEL ========
+function renderPainel(){
+  // countdown + pace
+  if(state.examDate){
+    const diff=Math.ceil((new Date(state.examDate+'T12:00:00')-Date.now())/86400000);
+    document.getElementById('p-days').textContent=Math.max(0,diff);
+    document.getElementById('p-days-sub').textContent=diff>0?'dias restantes':'Chegou o dia!';
+    const tt=state.sessions.reduce((a,s)=>a+s.seconds,0);
+    const rem=Math.max(0,(GOAL_TOTAL_H*3600)-tt);
+    if(diff>0){const pace=(rem/(diff*3600)).toFixed(1);document.getElementById('p-pace').textContent=pace+'h';document.getElementById('p-pace-sub').textContent=+pace<=state.goalHours?'✓ No ritmo':'⚠ Acima da meta';}
+    else{document.getElementById('p-pace').textContent='—';}
+  } else {
+    document.getElementById('p-days').textContent='—';
+    document.getElementById('p-days-sub').textContent='Configure a data da prova';
+    document.getElementById('p-pace').textContent='—';
+  }
+  // acertos
+  const swq=state.sessions.filter(s=>s.questoes>0);
+  document.getElementById('p-acertos').textContent=swq.length?Math.round(swq.reduce((a,s)=>a+s.acertos,0)/swq.reduce((a,s)=>a+s.questoes,0)*100)+'%':'—';
+  // edital bars com subtópicos
+  const totals={};state.sessions.forEach(s=>{totals[s.subject]=(totals[s.subject]||0)+s.seconds;});
+  const ts=Object.values(totals).reduce((a,b)=>a+b,0)||1;
+
+  // calcular totais por subtópico
+  const stTotals={};
+  state.sessions.forEach(s=>{
+    if(!s.subtopic)return;
+    const k=s.subject+'__'+s.subtopic;
+    if(!stTotals[k])stTotals[k]={key:s.subtopic,name:s.subtopicName,subject:s.subject,seconds:0};
+    stTotals[k].seconds+=s.seconds;
+  });
+
+  document.getElementById('edital-bars').innerHTML=subjects().map(s=>{
+    const w=state.weights[s.key]||0,ps=Math.round((totals[s.key]||0)/ts*100),col=ps-w<-10?'#E24B4A':ps-w>10?'#1D9E75':s.color;
+    const subjTops=Object.values(stTotals).filter(t=>t.subject===s.key).sort((a,b)=>b.seconds-a.seconds);
+    const hasTops=subjTops.length>0;
+    const subjSec=totals[s.key]||0;
+
+    const topsHtml=hasTops?`<div id="ptops_${s.key}" class="subtop-bars" style="margin-top:6px;margin-bottom:2px;padding-left:0">`+
+      subjTops.map(t=>{
+        const tw=subjSec>0?Math.round(t.seconds/subjSec*100):0;
+        return`<div class="subtop-bar-row" style="margin-bottom:8px">
+          <span class="subtop-bar-label" style="width:130px">${t.name}</span>
+          <div class="subtop-bar-track" style="height:6px"><div class="subtop-bar-fill" style="width:${tw}%;background:${s.color}99"></div></div>
+          <span class="subtop-bar-val" style="width:80px;text-align:right">${fmtH(t.seconds)}</span>
+          <span style="font-size:10px;color:var(--text3);width:32px;text-align:right;flex-shrink:0">${tw}%</span>
+        </div>`;
+      }).join('')+`</div>`:'';
+
+    const expandBtn=hasTops
+      ?`<button id="pbtn_${s.key}" onclick="togglePainelTops('${s.key}')"
+          style="border:none;background:none;cursor:pointer;font-size:11px;color:var(--blue);padding:0;margin-left:6px;flex-shrink:0;font-family:inherit">
+          ▶ ${subjTops.length} subtópico${subjTops.length>1?'s':''}
+        </button>`
+      :'';
+
+    return`<div style="margin-bottom:${hasTops?'4':'12'}px">
+      <div class="bar-row" style="margin-bottom:4px">
+        <span class="bar-label" style="font-weight:500">${s.name}</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${Math.min(100,ps)}%;background:${col}"></div>
+          <div style="position:absolute;top:-1px;left:${Math.min(100,w)}%;height:calc(100%+2px);width:3px;background:#EF9F27;opacity:.9;border-radius:2px"></div>
+        </div>
+        <span class="bar-val">${fmtH(subjSec)}</span>
+        <span style="font-size:10px;color:#EF9F27;width:28px;text-align:right;flex-shrink:0">${w}%</span>
+        ${expandBtn}
+      </div>
+      ${topsHtml}
+    </div>`;
+  }).join('');
+  // alerts
+  const td=state.sessions.filter(s=>s.date===today()).reduce((a,s)=>a+s.seconds,0);
+  const alerts=[];
+  if(!state.examDate)alerts.push({t:'alert-info',i:'📅',m:'Configure a data da prova em <b>Configurações</b> para ativar o cálculo de ritmo.'});
+  if(td===0)alerts.push({t:'alert-warn',i:'⏰',m:'Você ainda não estudou hoje. Abra o Timer e registre uma sessão!'});
+  else if(td>=state.goalHours*3600)alerts.push({t:'alert-ok',i:'✅',m:`Meta diária atingida! ${fmtH(td)} estudados hoje. Parabéns!`});
+  const avg=swq.length?Math.round(swq.reduce((a,s)=>a+s.acertos,0)/swq.reduce((a,s)=>a+s.questoes,0)*100):null;
+  if(avg!==null&&avg<60)alerts.push({t:'alert-danger',i:'⚠️',m:`Taxa de acertos em ${avg}%. Revise as matérias com mais erros antes de avançar no conteúdo.`});
+  document.getElementById('alerts-box').innerHTML=alerts.map(a=>`<div class="alert ${a.t}"><span class="alert-icon">${a.i}</span><span>${a.m}</span></div>`).join('');
+  // spaced repetition
+  const last={};state.sessions.forEach(s=>{if(!last[s.subject]||s.date>last[s.subject])last[s.subject]=s.date;});
+  document.getElementById('spaced-alerts').innerHTML=subjects().map(s=>{
+    const l=last[s.key];
+    if(!l)return`<div class="alert alert-warn" style="margin-bottom:8px"><span class="alert-icon">📖</span><span><b>${s.name}</b> — nunca estudada.</span></div>`;
+    const d=Math.max(0,Math.round((parseLocalDate(today())-parseLocalDate(l))/86400000));
+    if(d>=7)return`<div class="alert alert-danger" style="margin-bottom:8px"><span class="alert-icon">🔴</span><span><b>${s.name}</b> — ${d} dias sem revisar!</span></div>`;
+    if(d>=3)return`<div class="alert alert-warn" style="margin-bottom:8px"><span class="alert-icon">🟡</span><span><b>${s.name}</b> — ${d} dias sem revisar.</span></div>`;
+    return`<div class="alert alert-ok" style="margin-bottom:8px"><span class="alert-icon">🟢</span><span><b>${s.name}</b> — revisada há ${d} dia${d!==1?'s':''}.</span></div>`;
+  }).join('');
+}
+
+// ======== SIMULADOS ========
+function renderSimulados(){
+  const inp=document.getElementById('sim-subj-inputs');
+  if(inp)inp.innerHTML=`<div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;font-size:12px;color:var(--text3);margin-bottom:6px;font-weight:600"><span>Matéria</span><span>Questões</span><span>Acertos</span></div>`+
+    subjects().map(s=>`<div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:8px">
+      <span style="font-size:13px">${s.name}</span>
+      <input type="number" id="simq_${s.key}" min="0" placeholder="0">
+      <input type="number" id="sima_${s.key}" min="0" placeholder="0">
+    </div>`).join('');
+  const sd=document.getElementById('sim-date');if(sd&&!sd.value)sd.value=today();
+  const listEl=document.getElementById('sim-list');
+  if(!state.simulados.length){
+    listEl.innerHTML='<div class="empty">Nenhum simulado registrado ainda.</div>';
+    if(simChartI){simChartI.destroy();simChartI=null;}return;
+  }
+  listEl.innerHTML=state.simulados.slice(0,15).map(s=>{
+    const b=s.nota>=70?'badge-ok':s.nota>=50?'badge-warn':'badge-bad';
+    return`<div class="sim-row">
+      <div><div class="sim-nota">${s.nota}%</div><div class="sim-meta">${s.total} questões · ${s.acertos} acertos · ${s.date.slice(5).replace('-','/')}</div></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="badge ${b}">${s.nota>=70?'Bom':s.nota>=50?'Regular':'Atenção'}</span>
+        <button class="del-btn" onclick="delSim(${s.id})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+  if(simChartI)simChartI.destroy();
+  const ctx=document.getElementById('simChart');if(!ctx)return;
+  const sorted=[...state.simulados].sort((a,b)=>a.date.localeCompare(b.date));
+  simChartI=new Chart(ctx,{type:'line',data:{
+    labels:sorted.map(s=>s.date.slice(5).replace('-','/')),
+    datasets:[{label:'Nota %',data:sorted.map(s=>s.nota),borderColor:'#0D4F8B',backgroundColor:'rgba(13,79,139,.1)',tension:.3,pointRadius:6,pointBackgroundColor:'#0D4F8B',fill:true}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},x:{ticks:{font:{size:11}},grid:{display:false}}}}});
+}
+
+// ======== PROGRESSO ========
+function heatmapNav(dir){
+  heatmapMonth+=dir;
+  if(heatmapMonth>11){heatmapMonth=0;heatmapYear++;}
+  if(heatmapMonth<0){heatmapMonth=11;heatmapYear--;}
+  renderHeatmap();
+}
+
+function renderHeatmap(){
+  const grid=document.getElementById('hm-grid');
+  const title=document.getElementById('hm-title');
+  const monthTotal=document.getElementById('hm-month-total');
+  if(!grid)return;
+
+  const now=new Date();
+  const todayStr=today();
+
+  // Título do mês
+  const monthNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+                    'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  title.textContent=monthNames[heatmapMonth]+' '+heatmapYear;
+
+  // Montar mapa de segundos por dia
+  const dayMap={};
+  state.sessions.forEach(s=>{
+    if(s.date){
+      const [y,m]=s.date.split('-').map(Number);
+      if(y===heatmapYear&&m===heatmapMonth+1){
+        dayMap[s.date]=(dayMap[s.date]||0)+s.seconds;
+      }
+    }
+  });
+
+  // Total do mês
+  const monthSec=Object.values(dayMap).reduce((a,b)=>a+b,0);
+  monthTotal.textContent=monthSec>0?fmtH(monthSec)+' no mês':'Nenhuma sessão';
+
+  // Primeiro dia da semana do mês
+  const firstDay=new Date(heatmapYear,heatmapMonth,1).getDay();
+  const daysInMonth=new Date(heatmapYear,heatmapMonth+1,0).getDate();
+
+  // Escala de cores por horas
+  function getColor(sec){
+    if(!sec)return'#eef2f7';
+    const h=sec/3600;
+    if(h<0.5)return'#b8d0e8';
+    if(h<2)  return'#6fa8d0';
+    if(h<4)  return'#2a7ab5';
+    return'#0D4F8B';
+  }
+
+  let cells='';
+  // Células vazias antes do primeiro dia
+  for(let i=0;i<firstDay;i++){
+    cells+=`<div class="hm-cell empty"></div>`;
+  }
+  // Dias do mês
+  for(let d=1;d<=daysInMonth;d++){
+    const dateStr=`${heatmapYear}-${String(heatmapMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const sec=dayMap[dateStr]||0;
+    const h=(sec/3600).toFixed(1);
+    const color=getColor(sec);
+    const isToday=dateStr===todayStr;
+    const isFuture=dateStr>todayStr;
+    const tooltip=sec>0
+      ?`${d} — ${h}h estudadas`
+      :isFuture?`${d}`:`${d} — sem estudo`;
+    cells+=`<div class="hm-cell${isToday?' today':''}" style="background:${isFuture?'#f5f5f5':color}">
+      <div class="hm-tooltip">${tooltip}</div>
+    </div>`;
+  }
+  grid.innerHTML=cells;
+}
+
+function renderProgresso(){
+  renderHeatmap();
+  const wd=Array.from({length:14},(_,i)=>daysAgo(13-i));
+  const ws7=Array.from({length:7},(_,i)=>daysAgo(6-i)).reduce((a,d)=>a+state.sessions.filter(s=>s.date===d).reduce((b,s)=>b+s.seconds,0),0);
+  const ms=state.sessions.filter(s=>s.date>=monthStart()).reduce((a,s)=>a+s.seconds,0);
+  const avg=state.sessions.length?Math.round(state.sessions.reduce((a,s)=>a+s.seconds,0)/state.sessions.length):0;
+  document.getElementById('pr-week').textContent=fmtH(ws7);
+  document.getElementById('pr-month').textContent=fmtH(ms);
+  document.getElementById('pr-sess').textContent=state.sessions.length;
+  document.getElementById('pr-avg').textContent=state.sessions.length?fmtH(avg):'—';
+  // bars
+  const totals={};state.sessions.forEach(s=>{totals[s.subject]=(totals[s.subject]||0)+s.seconds;});
+  const mx=Math.max(...Object.values(totals),1);
+  // subtopic totals
+  const subtopTotals={};
+  state.sessions.forEach(s=>{
+    if(s.subtopic){
+      const k=s.subject+'__'+s.subtopic;
+      if(!subtopTotals[k])subtopTotals[k]={key:s.subtopic,name:s.subtopicName,subject:s.subject,seconds:0};
+      subtopTotals[k].seconds+=s.seconds;
+    }
+  });
+  const pb=document.getElementById('prog-bars');
+  if(pb){
+    const sorted=subjects().filter(s=>totals[s.key]).sort((a,b)=>(totals[b.key]||0)-(totals[a.key]||0));
+    pb.innerHTML=sorted.length?sorted.map(s=>{
+      const hasTops=Object.values(subtopTotals).some(t=>t.subject===s.key);
+      const topsHtml=hasTops?`<div class="subtop-bars" id="stbars_${s.key}">`+
+        Object.values(subtopTotals).filter(t=>t.subject===s.key).sort((a,b)=>b.seconds-a.seconds).map(t=>{
+          const tw=Math.round(t.seconds/totals[s.key]*100);
+          return`<div class="subtop-bar-row"><span class="subtop-bar-label">${t.name}</span><div class="subtop-bar-track"><div class="subtop-bar-fill" style="width:${tw}%;background:${s.color}88"></div></div><span class="subtop-bar-val">${fmtH(t.seconds)}</span></div>`;
+        }).join('')+`</div>`:'';
+      const expandBtn=hasTops?`<span onclick="toggleSubtopBars('${s.key}')" style="cursor:pointer;font-size:11px;color:var(--blue);margin-left:6px;flex-shrink:0" id="stbtn_${s.key}">▶ subtópicos</span>`:'';
+      return`<div><div class="bar-row"><span class="bar-label">${s.name}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round((totals[s.key]||0)/mx*100)}%;background:${s.color}"></div></div><span class="bar-val">${fmtH(totals[s.key]||0)}</span>${expandBtn}</div>${topsHtml}</div>`;
+    }).join(''):'<div class="empty">Nenhuma sessão ainda.</div>';
+  }
+  // session list
+  const sl=document.getElementById('sess-list');
+  if(sl)sl.innerHTML=state.sessions.length?state.sessions.slice(0,40).map(s=>{
+    const p=s.questoes>0?Math.round(s.acertos/s.questoes*100):null;
+    return`<div class="sess-item">
+      <div class="dot" style="background:${s.color}"></div>
+      <span class="sess-name">${s.subjectName}${s.subtopicName?' <span style="font-size:11px;color:var(--text3);font-weight:400">/ '+s.subtopicName+'</span>':''}</span>
+      <span class="sess-meta">${fmtH(s.seconds)} ${p!==null?'· '+p+'% acertos':''} · ${'★'.repeat(s.quality||3)}${'☆'.repeat(5-(s.quality||3))} · ${s.time} · ${s.date.slice(5).replace('-','/')}${s.manual?' · <span style="background:#FFF8E6;color:#7a4a00;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600">✏ manual</span>':''}</span>
+      <button class="del-btn" onclick="deleteSession(${s.id})">✕</button>
+    </div>`;
+  }).join(''):'<div class="empty">Nenhuma sessão registrada ainda.</div>';
+  // chart 14 days
+  if(weekChartI)weekChartI.destroy();
+  const ctx=document.getElementById('weekChart');if(!ctx)return;
+  weekChartI=new Chart(ctx,{type:'bar',data:{
+    labels:wd.map(d=>{const dt=new Date(d+'T12:00:00');return dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});}),
+    datasets:[{label:'Horas',data:wd.map(d=>+(state.sessions.filter(s=>s.date===d).reduce((a,s)=>a+s.seconds,0)/3600).toFixed(2)),backgroundColor:wd.map(d=>d===today()?'#EF9F27':'#0D4F8B'),borderRadius:5}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},x:{ticks:{font:{size:11},maxRotation:45},grid:{display:false}}}}});
+}
+
+// ======== CONFIG ========
+function renderConfig(){
+  const sm=document.getElementById('subj-manager');
+  if(sm){sm.innerHTML=subjects().map(s=>`
+    <div class="subj-man-row">
+      <div class="color-dot" style="background:${s.color}" onclick="openColorPicker('${s.key}')" title="Trocar cor"></div>
+      <input type="text" value="${s.name}" style="flex:1;max-width:200px"
+        onblur="renameSubject('${s.key}',this.value)"
+        onkeydown="if(event.key==='Enter')this.blur()">
+      <button class="btn sm" onclick="toggleSubtopicMgr('${s.key}')" title="Gerenciar subtópicos" style="color:var(--blue);border-color:var(--blue)">📌 ${(s.subtopics||[]).length}</button>
+      <button id="delbtn_${s.key}" class="btn sm" onclick="deleteSubject('${s.key}')">Apagar</button>
+    </div>
+    <div id="cp_${s.key}" class="color-picker" style="display:none">
+      ${PALETTE.map(c=>`<div class="cp${c===s.color?' sel':''}" style="background:${c}" onclick="recolorSubject('${s.key}','${c}')"></div>`).join('')}
+    </div>
+    <div id="topmgr_${s.key}" class="subtop-man" style="display:none">
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Subtópicos de ${s.name}</div>
+      ${(s.subtopics||[]).map(t=>`
+        <div class="subtop-man-row">
+          <input class="subtop-name-inp" type="text" value="${t.name}"
+            onblur="renameSubtopic('${s.key}','${t.key}',this.value)"
+            onkeydown="if(event.key==='Enter')this.blur()">
+          <button id="deltop_${t.key}" class="btn sm" data-pending="0" onclick="deleteSubtopic('${s.key}','${t.key}')">✕</button>
+        </div>`).join('')}
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input type="text" id="newtop_${s.key}" placeholder="Novo subtópico..." style="flex:1;font-size:12px;padding:6px 10px"
+          onkeydown="if(event.key==='Enter')addSubtopic('${s.key}')">
+        <button class="btn sm primary" onclick="addSubtopic('${s.key}')">+ Adicionar</button>
+      </div>
+    </div>
+  `).join('');}
+  // new subject colors
+  const nc=document.getElementById('new-subj-colors');
+  if(nc)nc.innerHTML=PALETTE.map(c=>`<div class="cp${c===newColor?' sel':''}" style="background:${c}" onclick="pickNewColor('${c}')"></div>`).join('');
+  // weights
+  const wr=document.getElementById('weight-rows');
+  if(wr){wr.innerHTML=subjects().map(s=>`<div class="weight-row"><span class="weight-name">${s.name}</span><input class="weight-inp" type="number" min="0" max="100" value="${state.weights[s.key]||0}" onchange="updateWeight('${s.key}',this.value)" style="width:70px"></div>`).join('');updateWeightSum();}
+  const gi=document.getElementById('goal-inp');if(gi)gi.value=state.goalHours;
+  const ei=document.getElementById('exam-date-inp');if(ei&&state.examDate)ei.value=state.examDate;
+  renderSyncConfig();
+}
+function pickNewColor(c){
+  newColor=c;
+  document.querySelectorAll('#new-subj-colors .cp').forEach(el=>el.classList.toggle('sel',el.style.background===c));
+}
+
+// ── SUBTÓPICOS ──
+function addSubtopic(subjKey){
+  const inp=document.getElementById('newtop_'+subjKey);
+  if(!inp||!inp.value.trim())return;
+  const sub=state.subjects.find(s=>s.key===subjKey);
+  if(!sub)return;
+  if(!sub.subtopics)sub.subtopics=[];
+  sub.subtopics.push({key:uid(),name:inp.value.trim()});
+  inp.value='';
+  saveState();renderConfig();renderSubtopicGrid();
+}
+function renameSubtopic(subjKey,topKey,name){
+  const sub=state.subjects.find(s=>s.key===subjKey);
+  const top=sub?.subtopics?.find(t=>t.key===topKey);
+  if(top&&name.trim()){
+    top.name=name.trim();
+    state.sessions.forEach(s=>{if(s.subtopic===topKey)s.subtopicName=top.name;});
+    saveState();
+  }
+}
+function deleteSubtopic(subjKey,topKey){
+  const sub=state.subjects.find(s=>s.key===subjKey);
+  if(!sub||!sub.subtopics)return;
+  const btn=document.getElementById('deltop_'+topKey);
+  if(btn&&btn.dataset.pending==='1'){
+    sub.subtopics=sub.subtopics.filter(t=>t.key!==topKey);
+    if(selSubtopic===topKey)selSubtopic=null;
+    saveState();renderConfig();renderSubtopicGrid();
+  } else if(btn){
+    btn.textContent='Confirmar?';btn.dataset.pending='1';btn.classList.add('danger');
+    setTimeout(()=>{if(btn){btn.textContent='✕';btn.dataset.pending='0';btn.classList.remove('danger');}},2500);
+  }
+}
+
+// ======== RPG ========
+const LEVELS=[
+  {lvl:1, name:'Recruta',     emoji:'🌱', xp:0,     color:'#8B7355', desc:'Sua jornada começa aqui. Todo mestre um dia foi iniciante.'},
+  {lvl:2, name:'Aprendiz',    emoji:'⚔️',  xp:100,   color:'#5F8A3C', desc:'Você está pegando o jeito! A consistência é sua maior arma.'},
+  {lvl:3, name:'Guerreiro',   emoji:'🛡️',  xp:300,   color:'#3A7DB5', desc:'Sua disciplina já supera a maioria dos candidatos.'},
+  {lvl:4, name:'Patrulheiro', emoji:'🗡️',  xp:600,   color:'#7B68EE', desc:'Você domina a rotina de estudos. O edital começa a ceder.'},
+  {lvl:5, name:'Caçador',     emoji:'🏹',  xp:1200,  color:'#E8920A', desc:'Sua dedicação impressiona. Você está entre os melhores.'},
+  {lvl:6, name:'Feiticeiro',  emoji:'🔮',  xp:2000,  color:'#9B59B6', desc:'O edital não tem mais segredos para você. Continue avançando.'},
+  {lvl:7, name:'Cavaleiro',   emoji:'🏰',  xp:3000,  color:'#C0392B', desc:'Candidato de elite. Poucos chegam até aqui — você chegou.'},
+  {lvl:8, name:'Herói',       emoji:'⚡',  xp:5000,  color:'#E67E22', desc:'Você está no topo da preparação. A prova está ao seu alcance.'},
+  {lvl:9, name:'Lendário',    emoji:'👑',  xp:8000,  color:'#D4AF37', desc:'Quase lá. Sua trajetória já é inspiração para outros candidatos.'},
+  {lvl:10,name:'APROVADO!',   emoji:'🔱',  xp:12000, color:'#0D4F8B', desc:'Você conquistou o direito de se chamar Petrobranista. Parabéns!'},
+];
+
+const ACHIEVEMENTS=[
+  {id:'first',   emoji:'🎯', label:'Primeira sessão',  check:()=>state.sessions.length>=1},
+  {id:'h10',     emoji:'⏱️', label:'10h estudadas',    check:()=>totalSec()>=36000},
+  {id:'h50',     emoji:'🔥', label:'50h estudadas',    check:()=>totalSec()>=180000},
+  {id:'h100',    emoji:'💯', label:'100h estudadas',   check:()=>totalSec()>=360000},
+  {id:'h200',    emoji:'🏋️', label:'200h estudadas',   check:()=>totalSec()>=720000},
+  {id:'streak7', emoji:'🗓️', label:'7 dias seguidos',  check:()=>(state.streak||0)>=7},
+  {id:'streak30',emoji:'📅', label:'30 dias seguidos', check:()=>(state.streak||0)>=30},
+  {id:'sim1',    emoji:'📝', label:'1º simulado',      check:()=>state.simulados.length>=1},
+  {id:'sim5',    emoji:'📊', label:'5 simulados',      check:()=>state.simulados.length>=5},
+  {id:'sim70',   emoji:'🏅', label:'Simulado ≥ 70%',  check:()=>state.simulados.some(s=>s.nota>=70)},
+  {id:'qual5',   emoji:'⭐', label:'Sessão 5 estrelas',check:()=>state.sessions.some(s=>s.quality===5)},
+  {id:'sess50',  emoji:'🎖️', label:'50 sessões',       check:()=>state.sessions.length>=50},
+];
+
+function totalSec(){return state.sessions.reduce((a,s)=>a+s.seconds,0);}
+
+function calcXP(){
+  const QMULT={1:0.5,2:0.8,3:1.0,4:1.3,5:1.7};
+  let xp=0;
+  // sessões: minutos × multiplicador de qualidade ÷ 3
+  state.sessions.forEach(s=>{
+    const mins=s.seconds/60;
+    const qm=QMULT[s.quality||3]||1.0;
+    xp+=Math.floor(mins*qm/3);
+  });
+  // streak bonus
+  xp+=(state.streak||0)*2;
+  // simulados
+  state.simulados.forEach(s=>{xp+=30;if(s.nota>=70)xp+=50;if(s.nota>=90)xp+=30;});
+  return xp;
+}
+
+function getLevelData(xp){
+  let lvl=LEVELS[0];
+  for(const l of LEVELS){if(xp>=l.xp)lvl=l;else break;}
+  return lvl;
+}
+function getNextLevel(xp){
+  for(const l of LEVELS){if(xp<l.xp)return l;}
+  return null;
+}
+
+let lastLevel=1;
+function renderRPG(){
+  const xp=calcXP();
+  const lvl=getLevelData(xp);
+  const next=getNextLevel(xp);
+  const pct=next?Math.round((xp-lvl.xp)/(next.xp-lvl.xp)*100):100;
+
+  // Sidebar
+  const sc=document.getElementById('rpg-char');if(sc)sc.textContent=lvl.emoji;
+  const sn=document.getElementById('rpg-lvl-name');if(sn)sn.textContent=lvl.name;
+  const sl=document.getElementById('rpg-lvl-num');if(sl)sl.textContent='Nível '+lvl.lvl;
+  const sf=document.getElementById('rpg-xp-fill');if(sf){sf.style.width=pct+'%';sf.style.background=lvl.color;}
+  const sc2=document.getElementById('rpg-xp-cur');if(sc2)sc2.textContent=xp+' XP';
+  const sn2=document.getElementById('rpg-xp-next');if(sn2)sn2.textContent=next?next.xp+' XP':'MAX';
+
+  // Painel card
+  const pa=document.getElementById('rpg-avatar-big');if(pa)pa.textContent=lvl.emoji;
+  const pln=document.getElementById('rpg-painel-lvlnum');if(pln)pln.textContent='NÍVEL '+lvl.lvl;
+  const pname=document.getElementById('rpg-painel-name');if(pname){pname.textContent=lvl.name;pname.style.color=lvl.color;}
+  const pdesc=document.getElementById('rpg-painel-desc');if(pdesc)pdesc.textContent=lvl.desc;
+  const pb=document.getElementById('rpg-painel-bar');if(pb){pb.style.width=pct+'%';pb.style.background=lvl.color;}
+  const pxp=document.getElementById('rpg-painel-xpcur');if(pxp)pxp.textContent=xp+' XP acumulados';
+  const pnx=document.getElementById('rpg-painel-xpnext');if(pnx)pnx.textContent=next?'próximo: '+next.xp+' XP (faltam '+(next.xp-xp)+')':'Nível máximo atingido! 🔱';
+  const psx=document.getElementById('rpg-stat-xp');if(psx)psx.textContent=xp;
+  const pss=document.getElementById('rpg-stat-streak');if(pss)pss.textContent=(state.streak||0)+'🔥';
+  const pse=document.getElementById('rpg-stat-sess');if(pse)pse.textContent=state.sessions.length;
+  const psm=document.getElementById('rpg-stat-sims');if(psm)psm.textContent=state.simulados.length;
+
+  // Conquistas
+  const ach=document.getElementById('rpg-achievements');
+  if(ach)ach.innerHTML=ACHIEVEMENTS.map(a=>{
+    const on=a.check();
+    return`<div class="ach ${on?'on':'off'}" title="${on?'Conquistado!':'Ainda não conquistada'}">${a.emoji} ${a.label}</div>`;
+  }).join('');
+
+  // Level-up check
+  if(lvl.lvl>lastLevel){
+    showLevelUp(lvl);
+  }
+  lastLevel=lvl.lvl;
+}
+
+function showLevelUp(lvl){
+  const t=document.getElementById('lvlup-toast');
+  const i=document.getElementById('lvlup-icon');
+  const n=document.getElementById('lvlup-name');
+  const s=document.getElementById('lvlup-sub');
+  if(!t)return;
+  if(i)i.textContent=lvl.emoji;
+  if(n)n.textContent=lvl.name;
+  if(s)s.textContent='Nível '+lvl.lvl+' desbloqueado!';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),4000);
+}
+
+// ======== FLASHCARDS (SM-2) ========
+// Algoritmo SM-2 simplificado — igual ao Anki
+// Ratings: 0=Não lembro, 1=Difícil, 2=Bom, 3=Fácil
+
+let fcFrontImage=null,fcFrontImageX=0,fcFrontImageY=0;
+let fcBackImage=null,fcBackImageX=0,fcBackImageY=0;
+let fcSession=[];   // cartas da sessão atual
+let fcIdx=0;        // índice na sessão
+let fcFlipped=false;// carta virada?
+let fcSessionDone=0;// quantas avaliadas nesta sessão
+let fcSessionStarted=false; // sessão foi iniciada?
+
+function fcCards(){return state.flashcards||[];}
+
+// ── Captura e imagem ──
+// Drag do container inteiro dentro da carta
+function fcInitDrag(wrap, side){
+  if(!wrap)return;
+  // Limites: carta 340x480, container 280x160
+  const CARD_W=340, CARD_H=480, W=280, H=160;
+  let dragging=false, ox=0, oy=0, ix=0, iy=0;
+
+  function clamp(v, min, max){return Math.max(min, Math.min(max, v));}
+
+  wrap.onmousedown=e=>{
+    e.preventDefault(); e.stopPropagation();
+    dragging=true;
+    ox=e.clientX; oy=e.clientY;
+    ix=parseInt(wrap.style.left)||30;
+    iy=parseInt(wrap.style.top)||30;
+    wrap.style.cursor='grabbing';
+  };
+  const onMove=e=>{
+    if(!dragging)return;
+    const nx=clamp(ix+(e.clientX-ox), 0, CARD_W-W);
+    const ny=clamp(iy+(e.clientY-oy), 0, CARD_H-H);
+    wrap.style.left=nx+'px'; wrap.style.top=ny+'px';
+    if(side==='front'){fcFrontImageX=nx;fcFrontImageY=ny;}
+    else{fcBackImageX=nx;fcBackImageY=ny;}
+  };
+  const onUp=()=>{dragging=false; wrap.style.cursor='grab';};
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+
+  wrap.ontouchstart=e=>{
+    const t=e.touches[0];
+    dragging=true; ox=t.clientX; oy=t.clientY;
+    ix=parseInt(wrap.style.left)||30; iy=parseInt(wrap.style.top)||30;
+  };
+  wrap.ontouchmove=e=>{
+    if(!dragging)return; e.preventDefault();
+    const t=e.touches[0];
+    const nx=clamp(ix+(t.clientX-ox), 0, CARD_W-W);
+    const ny=clamp(iy+(t.clientY-oy), 0, CARD_H-H);
+    wrap.style.left=nx+'px'; wrap.style.top=ny+'px';
+    if(side==='front'){fcFrontImageX=nx;fcFrontImageY=ny;}
+    else{fcBackImageX=nx;fcBackImageY=ny;}
+  };
+  wrap.ontouchend=()=>{dragging=false;};
+}
+
+function fcPreviewFlip(e){
+  const wrap=document.getElementById('fc-preview-wrap');
+  const label=document.getElementById('fc-preview-label');
+  if(!wrap)return;
+  const flipped=wrap.classList.toggle('flipped');
+  if(label)label.textContent=flipped?'Verso':'Frente';
+}
+
+function fcUpdateAboveLabel(flipped){
+  const el=document.getElementById('fc-above-label');
+  if(el)el.textContent=flipped?'Verso — clique para virar':'Frente — clique para virar';
+}
+
+function fcOpenLightbox(src){
+  document.getElementById('fc-lightbox-img').src=src;
+  document.getElementById('fc-lightbox').classList.add('show');
+}
+
+// Captura via Ctrl+V — veja fcSetupPreview()
+
+function fcUploadImage(event,side){
+  const file=event.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const canvas=document.createElement('canvas');
+      // Mantém resolução original (até 2560px), sem compressão com perda
+      const maxW=2560;
+      const scale=Math.min(1,maxW/img.width);
+      canvas.width=Math.round(img.width*scale);
+      canvas.height=Math.round(img.height*scale);
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      fcSetImage(side,canvas.toDataURL('image/png'));
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+  event.target.value='';
+}
+
+function fcSetImage(side,dataUrl){
+  if(side==='front'){
+    fcFrontImage=dataUrl; fcFrontImageX=0; fcFrontImageY=0;
+    const th=document.getElementById('fc-front-thumb');
+    const pr=document.getElementById('fc-front-img-preview');
+    const wrap=document.getElementById('prev-img-front-wrap');
+    const img=document.getElementById('prev-img-front');
+    if(th)th.src=dataUrl;
+    if(pr)pr.style.display='block';
+    if(wrap){wrap.style.display='block';}
+    if(img)img.src=dataUrl;
+    if(wrap){wrap.style.left='30px';wrap.style.top='30px';}
+    fcFrontImageX=30;fcFrontImageY=30;
+    fcInitDrag(wrap,'front');
+  } else {
+    fcBackImage=dataUrl; fcBackImageX=0; fcBackImageY=0;
+    const th=document.getElementById('fc-back-thumb');
+    const pr=document.getElementById('fc-back-img-preview');
+    const wrap=document.getElementById('prev-img-back-wrap');
+    const img=document.getElementById('prev-img-back');
+    if(th)th.src=dataUrl;
+    if(pr)pr.style.display='block';
+    if(wrap){wrap.style.display='block';}
+    if(img)img.src=dataUrl;
+    if(wrap){wrap.style.left='30px';wrap.style.top='30px';}
+    fcBackImageX=30;fcBackImageY=30;
+    fcInitDrag(wrap,'back');
+  }
+}
+
+function fcClearImage(side){
+  if(side==='front'){
+    fcFrontImage=null; fcFrontImageX=0; fcFrontImageY=0;
+    const th=document.getElementById('fc-front-thumb');
+    const pr=document.getElementById('fc-front-img-preview');
+    const wrap=document.getElementById('prev-img-front-wrap');
+    if(th)th.src='';
+    if(pr)pr.style.display='none';
+    if(wrap)wrap.style.display='none';
+  } else {
+    fcBackImage=null; fcBackImageX=0; fcBackImageY=0;
+    const th=document.getElementById('fc-back-thumb');
+    const pr=document.getElementById('fc-back-img-preview');
+    const wrap=document.getElementById('prev-img-back-wrap');
+    if(th)th.src='';
+    if(pr)pr.style.display='none';
+    if(wrap)wrap.style.display='none';
+  }
+}
+
+function fcDueCards(){
+  const t=today();
+  return fcCards().filter(c=>!c.due||c.due<=t);
+}
+function fcNewCards(){return fcCards().filter(c=>c.reps===0);}
+function fcMasteredCards(){return fcCards().filter(c=>(c.interval||1)>=21);}
+
+// SM-2: calcula próximo intervalo baseado no rating
+function sm2(card, rating){
+  let {interval=1, ease=2.5, reps=0, lapses=0}=card;
+  if(rating===0){ // Não lembro
+    interval=1; lapses++; reps=0;
+    ease=Math.max(1.3, ease-0.2);
+  } else if(rating===1){ // Difícil
+    interval=Math.max(1, Math.round(interval*1.2));
+    ease=Math.max(1.3, ease-0.15);
+    reps++;
+  } else if(rating===2){ // Bom
+    if(reps===0) interval=1;
+    else if(reps===1) interval=3;
+    else interval=Math.round(interval*ease);
+    reps++;
+  } else { // Fácil
+    if(reps===0) interval=3;
+    else interval=Math.round(interval*ease*1.3);
+    ease=Math.min(3.0, ease+0.15);
+    reps++;
+  }
+  // Calcula próxima data de revisão
+  const d=new Date();
+  d.setDate(d.getDate()+interval);
+  const due=localDateStr(d);
+  return{...card, interval, ease, reps, lapses, due, lastReview:today()};
+}
+
+// Criar carta
+function fcCreateCard(){
+  const front=document.getElementById('fc-new-front')?.value.trim();
+  const back=document.getElementById('fc-new-back')?.value.trim();
+  if(!front||!back){
+    const m=document.getElementById('fc-create-msg');
+    if(m){m.textContent='⚠ Preencha frente e verso.';m.style.color='var(--red)';}
+    return;
+  }
+  const subjKey=document.getElementById('fc-new-subj')?.value||'';
+  const subtopKey=document.getElementById('fc-new-subtop')?.value||'';
+  const sub=subj(subjKey);
+  const tops=subjects().find(s=>s.key===subjKey)?.subtopics||[];
+  const top=tops.find(t=>t.key===subtopKey);
+  if(!state.flashcards)state.flashcards=[];
+  state.flashcards.push({
+    id:uid(), front, back,
+    frontImage:fcFrontImage||null,
+    frontImageX:fcFrontImage?fcFrontImageX:0,
+    frontImageY:fcFrontImage?fcFrontImageY:0,
+    backImage:fcBackImage||null,
+    backImageX:fcBackImage?fcBackImageX:0,
+    backImageY:fcBackImage?fcBackImageY:0,
+    subject:sub.key, subjectName:sub.name, subjectColor:sub.color,
+    subtopic:top?.key||null, subtopicName:top?.name||null,
+    created:today(),
+    interval:1, ease:2.5, reps:0, lapses:0, due:today(), lastReview:null
+  });
+  saveState();
+  document.getElementById('fc-new-front').value='';
+  document.getElementById('fc-new-back').value='';
+  document.getElementById('fc-preview-front').textContent='Digite a frente da carta acima...';
+  document.getElementById('fc-preview-front').style.fontStyle='italic';
+  document.getElementById('fc-preview-front').style.color='var(--text3)';
+  document.getElementById('fc-preview-back').textContent='Digite o verso da carta acima...';
+  document.getElementById('fc-preview-back').style.fontStyle='italic';
+  document.getElementById('fc-preview-back').style.color='var(--text3)';
+  document.getElementById('fc-preview-wrap').classList.remove('flipped');
+  fcClearImage('front');fcClearImage('back');
+  fcFrontImage=null;fcBackImage=null;
+  fcFrontImageX=0;fcFrontImageY=0;fcBackImageX=0;fcBackImageY=0;
+  document.getElementById('fc-preview-wrap')?.classList.remove('flipped');
+  const lbl=document.getElementById('fc-preview-label');if(lbl)lbl.textContent='Frente';
+  const m=document.getElementById('fc-create-msg');
+  if(m){m.textContent='✓ Carta salva!';m.style.color='var(--green)';}
+  setTimeout(()=>{if(m)m.textContent='';},2500);
+  fcRenderAll();
+}
+
+function fcDeleteCard(id){
+  const btn=document.getElementById('fcdel_'+id);
+  if(!btn)return;
+  if(btn.dataset.pending==='1'){
+    state.flashcards=state.flashcards.filter(c=>c.id!==id);
+    saveState();fcRenderAll();
+  } else {
+    btn.textContent='Confirmar?';btn.dataset.pending='1';btn.classList.add('danger');
+    setTimeout(()=>{if(btn){btn.textContent='✕';btn.dataset.pending='0';btn.classList.remove('danger');}},2500);
+  }
+}
+
+// Iniciar sessão de estudo
+function fcStartSession(){
+  const due=fcDueCards();
+  // Ordena: não lembro primeiro, depois por data de vencimento
+  fcSession=[...due].sort((a,b)=>{
+    if(a.reps===0&&b.reps>0)return-1;
+    if(b.reps===0&&a.reps>0)return 1;
+    return (a.due||'').localeCompare(b.due||'');
+  });
+  fcIdx=0;fcFlipped=false;fcSessionDone=0;fcSessionStarted=true;
+  fcRenderStudy();
+}
+
+function fcInitStudyDrag(){
+  // Ativa drag nos containers do modo estudo para reposicionamento persistente
+  const cardIdx=fcSession[fcIdx-1];
+  if(!cardIdx)return;
+  const fi=state.flashcards.findIndex(c=>c.id===cardIdx.id);
+  ['front','back'].forEach(side=>{
+    const el=document.getElementById('study-img-'+side);
+    if(!el)return;
+    fcInitDrag(el,side);
+    // Salva posição nova no card ao mover
+    const origInit=el.onmousedown;
+    el.onmousedown=e=>{
+      if(origInit)origInit.call(el,e);
+      const onUp=()=>{
+        if(fi>=0){
+          state.flashcards[fi].frontImageX=fcFrontImageX;
+          state.flashcards[fi].frontImageY=fcFrontImageY;
+          state.flashcards[fi].backImageX=fcBackImageX;
+          state.flashcards[fi].backImageY=fcBackImageY;
+          saveState();
+        }
+        document.removeEventListener('mouseup',onUp);
+      };
+      document.addEventListener('mouseup',onUp);
+    };
+  });
+}
+
+function fcRateCard(rating){
+  if(fcIdx>=fcSession.length)return;
+  const card=fcSession[fcIdx];
+  const updated=sm2(card,rating);
+  const i=state.flashcards.findIndex(c=>c.id===card.id);
+  if(i>=0)state.flashcards[i]=updated;
+  saveState();
+  fcSessionDone++;
+  fcIdx++;
+  fcFlipped=false;
+  fcRenderStudy();
+}
+
+function fcFlipCard(){
+  fcFlipped=!fcFlipped;
+  const wrap=document.getElementById('fc-card-inner');
+  if(wrap)wrap.classList.toggle('flipped',fcFlipped);
+  const ratings=document.getElementById('fc-ratings-area');
+  if(ratings)ratings.style.display=fcFlipped?'block':'none';
+  const hint=document.getElementById('fc-flip-hint');
+  if(hint)hint.style.display=fcFlipped?'none':'block';
+  fcUpdateAboveLabel(fcFlipped);
+}
+
+function fcRenderStudy(){
+  const area=document.getElementById('fc-study-area');
+  if(!area)return;
+  const due=fcDueCards();
+  // Atualiza stats sempre
+  document.getElementById('fc-stat-due').textContent=due.length;
+  document.getElementById('fc-stat-new').textContent=fcNewCards().length;
+  document.getElementById('fc-stat-total').textContent=fcCards().length;
+  document.getElementById('fc-stat-mastered').textContent=fcMasteredCards().length;
+
+  if(fcCards().length===0){
+    area.innerHTML=`<div class="card" style="text-align:center;padding:40px">
+      <div style="font-size:48px;margin-bottom:12px">🃏</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:6px">Nenhuma carta criada ainda</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Crie suas primeiras cartas na aba <b>Criar carta</b>.</div>
+      <button class="btn primary" onclick="fcGoTab('criar')">+ Criar primeira carta</button>
+    </div>`;
+    return;
+  }
+
+  if(due.length===0){
+    area.innerHTML=`<div class="card" style="text-align:center;padding:40px">
+      <div style="font-size:48px;margin-bottom:12px">✅</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:6px">Tudo em dia!</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:6px">Você revisou todas as cartas por hoje. Volte amanhã para as próximas revisões.</div>
+      <div style="font-size:12px;color:var(--text3)">Total de cartas: ${fcCards().length} · Dominadas: ${fcMasteredCards().length}</div>
+    </div>`;
+    return;
+  }
+
+  if(!fcSessionStarted){
+    // Tela de início da sessão
+    area.innerHTML=`<div class="card" style="text-align:center;padding:40px">
+      <div style="font-size:48px;margin-bottom:12px">🎯</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:6px">${due.length} carta${due.length>1?'s':''} para revisar</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:20px">O algoritmo SM-2 selecionou as cartas ideais para hoje com base no seu histórico.</div>
+      <button class="btn primary" onclick="fcStartSession()">▶ Iniciar revisão</button>
+    </div>`;
+    return;
+  }
+
+  if(fcIdx>=fcSession.length){
+    // Sessão concluída
+    area.innerHTML=`<div class="fc-done">
+      <div class="fc-done-icon">🏆</div>
+      <div class="fc-done-title">Sessão concluída!</div>
+      <div class="fc-done-sub">Você revisou ${fcSessionDone} carta${fcSessionDone>1?'s':''} hoje. Continue assim!</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        ${fcDueCards().length>0?`<button class="btn primary" onclick="fcStartSession()">▶ Continuar (${fcDueCards().length} restantes)</button>`:''}
+        <button class="btn" onclick="fcGoTab('criar')">+ Criar novas cartas</button>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const card=fcSession[fcIdx];
+  const total=fcSession.length;
+  const pct=Math.round((fcIdx/total)*100);
+  const statusLabel=card.reps===0?'<span class="fc-badge fc-badge-new">Nova</span>':
+    (card.interval||1)>=21?'<span class="fc-badge fc-badge-review">Dominada</span>':
+    card.lapses>0?'<span class="fc-badge fc-badge-due">Revisar</span>':
+    '<span class="fc-badge fc-badge-learn">Aprendendo</span>';
+
+  area.innerHTML=`
+    <div class="fc-counter"><span>${fcIdx+1} de ${total} ${statusLabel}</span><span style="font-size:11px">${card.subjectName}${card.subtopicName?' / '+card.subtopicName:''}</span></div>
+    <div class="fc-progress-bar"><div class="fc-progress-fill" style="width:${pct}%"></div></div>
+    <div class="fc-above-label" id="fc-above-label">Frente — clique para virar</div>
+    <div class="fc-scene">
+      <div class="fc-card-wrap" id="fc-card-inner" onclick="fcFlipCard()">
+        <div class="fc-face fc-front">
+          ${card.frontImage?`<div class="fc-img-drag-wrap" id="study-img-front" style="left:${card.frontImageX||30}px;top:${card.frontImageY||30}px" onclick="event.stopPropagation()"><img src="${card.frontImage}" draggable="false"><div class="fc-drag-hint">arraste para mover</div></div>`:''}
+          <div class="fc-face-text">${card.front}</div>
+          <div class="fc-face-hint" id="fc-flip-hint">Clique para ver a resposta</div>
+        </div>
+        <div class="fc-face fc-back">
+          ${card.backImage?`<div class="fc-img-drag-wrap" id="study-img-back" style="left:${card.backImageX||30}px;top:${card.backImageY||30}px" onclick="event.stopPropagation()"><img src="${card.backImage}" draggable="false"><div class="fc-drag-hint">arraste para mover</div></div>`:''}
+          <div class="fc-face-text">${card.back}</div>
+        </div>
+      </div>
+    </div>
+    <div id="fc-ratings-area" style="display:none;margin-top:20px">
+      <div style="text-align:center;font-size:12px;color:var(--text2);margin-bottom:12px;font-weight:500">Como você se saiu?</div>
+      <div class="fc-ratings">
+        <button class="fc-rate-btn fc-rate-0" onclick="fcRateCard(0)">😵 Não lembro<br><span style="font-size:10px;font-weight:400">ver amanhã</span></button>
+        <button class="fc-rate-btn fc-rate-1" onclick="fcRateCard(1)">😓 Difícil<br><span style="font-size:10px;font-weight:400">intervalo curto</span></button>
+        <button class="fc-rate-btn fc-rate-2" onclick="fcRateCard(2)">🙂 Bom<br><span style="font-size:10px;font-weight:400">intervalo normal</span></button>
+        <button class="fc-rate-btn fc-rate-3" onclick="fcRateCard(3)">😄 Fácil<br><span style="font-size:10px;font-weight:400">intervalo longo</span></button>
+      </div>
+    </div>`;
+  // Inicializa drag APÓS o DOM ser montado
+  setTimeout(fcInitStudyDrag, 30);
+}
+
+function fcRenderList(){
+  const area=document.getElementById('fc-list-area');
+  if(!area)return;
+  const filterSubj=document.getElementById('fc-filter-subj')?.value||'';
+  const search=(document.getElementById('fc-search')?.value||'').toLowerCase();
+  let cards=fcCards().filter(c=>{
+    if(filterSubj&&c.subject!==filterSubj)return false;
+    if(search&&!c.front.toLowerCase().includes(search)&&!c.back.toLowerCase().includes(search))return false;
+    return true;
+  });
+  if(!cards.length){area.innerHTML='<div class="empty">Nenhuma carta encontrada.</div>';return;}
+  const t=today();
+  area.innerHTML=cards.map(c=>{
+    const isDue=c.due<=t;
+    const isNew=c.reps===0;
+    const isMastered=(c.interval||1)>=21;
+    const badge=isNew?'<span class="fc-badge fc-badge-new">Nova</span>':
+      isMastered?'<span class="fc-badge fc-badge-review">Dominada</span>':
+      isDue?'<span class="fc-badge fc-badge-due">Revisar</span>':
+      '<span class="fc-badge fc-badge-learn">Agendada</span>';
+    return`<div class="fc-list-row">
+      <div style="width:8px;height:8px;border-radius:50%;background:${c.subjectColor};flex-shrink:0"></div>
+      <div class="fc-list-front" title="${c.front}">${c.front}</div>
+      <span class="fc-list-meta">${c.subjectName}${c.subtopicName?' / '+c.subtopicName:''}</span>
+      ${badge}
+      <span class="fc-list-meta">Int: ${c.interval||1}d</span>
+      <button id="fcdel_${c.id}" class="del-btn" data-pending="0" onclick="fcDeleteCard('${c.id}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function fcRenderSubjSel(){
+  const sel=document.getElementById('fc-new-subj');
+  if(!sel)return;
+  sel.innerHTML=subjects().map(s=>`<option value="${s.key}">${s.name}</option>`).join('');
+  fcRenderSubtopSel();
+}
+function fcRenderSubtopSel(){
+  const sel=document.getElementById('fc-new-subj');
+  const ssel=document.getElementById('fc-new-subtop');
+  if(!sel||!ssel)return;
+  const tops=subjects().find(s=>s.key===sel.value)?.subtopics||[];
+  ssel.innerHTML='<option value="">— Nenhum —</option>'+tops.map(t=>`<option value="${t.key}">${t.name}</option>`).join('');
+}
+function fcRenderFilterSubj(){
+  const sel=document.getElementById('fc-filter-subj');
+  if(!sel)return;
+  sel.innerHTML='<option value="">Todas as matérias</option>'+subjects().map(s=>`<option value="${s.key}">${s.name}</option>`).join('');
+}
+
+// Preview em tempo real + paste de imagem
+function fcSetupPreview(){
+  const f=document.getElementById('fc-new-front');
+  const b=document.getElementById('fc-new-back');
+  const pf=document.getElementById('fc-preview-front');
+  const pb=document.getElementById('fc-preview-back');
+
+  function setupPaste(el, side){
+    if(!el)return;
+    el.addEventListener('paste', e=>{
+      const items=e.clipboardData?.items;
+      if(!items)return;
+      for(const item of items){
+        if(item.type.startsWith('image/')){
+          e.preventDefault();
+          const blob=item.getAsFile();
+          if(!blob)return;
+          const reader=new FileReader();
+          reader.onload=ev=>{
+            const img=new Image();
+            img.onload=()=>{
+              const canvas=document.createElement('canvas');
+              // PNG lossless — sem perda de qualidade para prints de tela
+              const maxW=2560;
+              const scale=Math.min(1,maxW/img.width);
+              canvas.width=Math.round(img.width*scale);
+              canvas.height=Math.round(img.height*scale);
+              canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+              fcSetImage(side, canvas.toDataURL('image/png'));
+            };
+            img.src=ev.target.result;
+          };
+          reader.readAsDataURL(blob);
+          return;
+        }
+      }
+    });
+  }
+
+  setupPaste(f,'front');
+  setupPaste(b,'back');
+
+  if(f&&pf)f.addEventListener('input',()=>{
+    pf.textContent=f.value||'Digite a frente da carta acima...';
+    pf.style.fontStyle=f.value?'normal':'italic';
+    pf.style.color=f.value?'var(--text)':'var(--text3)';
+  });
+  if(b&&pb)b.addEventListener('input',()=>{
+    pb.textContent=b.value||'Digite o verso da carta acima...';
+    pb.style.fontStyle=b.value?'normal':'italic';
+    pb.style.color=b.value?'var(--text)':'var(--text3)';
+  });
+}
+
+function fcGoTab(tab){
+  ['estudar','criar','gerenciar'].forEach(t=>{
+    document.getElementById('fcview-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('fctab-'+t).classList.toggle('active',t===tab);
+  });
+  if(tab==='estudar'){fcSessionStarted=false;fcSession=[];fcIdx=0;fcSessionDone=0;fcRenderStudy();}
+  if(tab==='criar'){fcRenderSubjSel();fcSetupPreview();}
+  if(tab==='gerenciar'){fcRenderFilterSubj();fcRenderList();}
+}
+
+function fcRenderAll(){
+  fcRenderStudy();
+  if(document.getElementById('fcview-criar').style.display!=='none')fcRenderSubjSel();
+  if(document.getElementById('fcview-gerenciar').style.display!=='none'){fcRenderFilterSubj();fcRenderList();}
+}
+
+// ======== MENSAGEM DO DIA ========
+const MENSAGENS=[
+  {e:'🎯',t:'Foco total hoje. Cada hora de estudo é um passo a mais à frente dos outros candidatos.'},
+  {e:'💪',t:'Disciplina é fazer o que precisa ser feito, mesmo quando não está com vontade. Abre o material!'},
+  {e:'🚀',t:'A Petrobras não escolhe os mais inteligentes — escolhe os mais preparados. Seja esse candidato.'},
+  {e:'📚',t:'Consistência bate genialidade. Um pouco todo dia vale mais do que muito de vez em quando.'},
+  {e:'⏰',t:'O tempo que você investe hoje é o salário que vai receber amanhã. Não desperdice.'},
+  {e:'🔥',t:'Você já está na frente de quem nem começou. Mantenha o ritmo!'},
+  {e:'🧠',t:'Revisão é o segredo. Não basta estudar — é preciso revisar antes de esquecer.'},
+  {e:'🏆',t:'Pense no dia da posse. Esse sentimento vale cada hora de estudo difícil de hoje.'},
+  {e:'🌅',t:'Cada manhã é uma nova chance de chegar mais perto da aprovação. Não deixe passar.'},
+  {e:'⚡',t:'Não compare seu progresso com o dos outros. Compare com quem você era ontem.'},
+  {e:'🎓',t:'Candidato aprovado não é o que estudou mais — é o que estudou melhor e não desistiu.'},
+  {e:'💡',t:'Se uma matéria parece difícil, é sinal de que você precisa dedicar mais tempo a ela. Encare.'},
+  {e:'🛢️',t:'A Petrobras é uma das maiores empresas do mundo. Uma vaga assim exige o seu melhor esforço.'},
+  {e:'📈',t:'Pequenos avanços diários criam resultados extraordinários. Confie no processo.'},
+  {e:'🧩',t:'Resolva questões. Ler o conteúdo não é suficiente — é praticando que a fixação acontece.'},
+  {e:'🌟',t:'Acredite: você é capaz de passar. Agora prove para si mesmo estudando hoje.'},
+  {e:'🔑',t:'A chave do concurso não é talento. É repetição, revisão e persistência.'},
+  {e:'💼',t:'Carteira assinada, plano de saúde, PLR e estabilidade. Lembre do que está em jogo.'},
+  {e:'🎯',t:'Defina uma meta de horas para hoje e cumpra. Metas escritas têm 42% mais chance de serem alcançadas.'},
+  {e:'🧗',t:'As partes mais difíceis do conteúdo são exatamente as que separam aprovados de reprovados.'},
+  {e:'⚙️',t:'Conhecimentos Específicos é o que mais pesa na prova. Não negligencie essa matéria.'},
+  {e:'📝',t:'Simule condições de prova: resolva questões com tempo marcado. O hábito faz diferença.'},
+  {e:'🌊',t:'Cansaço é temporário. Arrependimento de não ter se preparado é permanente.'},
+  {e:'💎',t:'Vagas na Petrobras são raras e valiosíssimas. Cada minuto de estudo é um investimento real.'},
+  {e:'🏅',t:'O estudo de hoje é o resultado de amanhã. Plante agora, colha na prova.'},
+  {e:'🔬',t:'Química e Física assustam, mas com prática diária ficam dominadas. Não fuja delas.'},
+  {e:'📖',t:'Língua Portuguesa aparece em todas as questões, não só na específica. Leia muito!'},
+  {e:'🧮',t:'Matemática e Raciocínio Lógico exigem prática diária. Resolva pelo menos 10 questões hoje.'},
+  {e:'🛡️',t:'Segurança do trabalho é lei dentro da Petrobras. Domine esse conteúdo — ele é valorizado.'},
+  {e:'🌍',t:'Atualidades mudam todo dia. Reserve 15 minutos para ler notícias do setor de energia.'},
+  {e:'🔄',t:'Revise o que estudou ontem antes de começar conteúdo novo. A memória agradece.'},
+  {e:'📊',t:'Olhe seus gráficos de progresso. Os números não mentem — eles mostram onde focar.'},
+  {e:'🏃',t:'Maratona se vence com ritmo constante, não com sprints. Estude todo dia, mesmo que pouco.'},
+  {e:'🎵',t:'Encontre sua playlist de foco e entre no modo de estudo. O ambiente importa.'},
+  {e:'☕',t:'Hidrate-se, descanse bem e estude com qualidade. Cuidar do corpo é parte do preparo.'},
+  {e:'🦅',t:'Pense como aprovado: não "se eu passar", mas "quando eu passar". A mentalidade muda tudo.'},
+  {e:'🌙',t:'Uma hora de estudo concentrado vale mais do que três horas dispersas. Qualidade primeiro.'},
+  {e:'💬',t:'"A diferença entre ordinário e extraordinário é aquele pequeno extra." Dê o seu extra hoje.'},
+  {e:'🔭',t:'Tenha visão de longo prazo. O esforço de hoje vai parecer pequeno perto do resultado final.'},
+  {e:'🧲',t:'Prepare-se tão bem que a aprovação seja inevitável.'},
+  {e:'🌱',t:'Todo especialista um dia foi iniciante. Continue crescendo, uma matéria de cada vez.'},
+  {e:'⭐',t:'Você não precisa ser o melhor candidato do Brasil — só precisa passar. Foque no suficiente para isso.'},
+  {e:'🏗️',t:'Construa seu conhecimento tijolo por tijolo. Bases sólidas sustentam qualquer prova.'},
+  {e:'🎲',t:'Concurso não é loteria para quem se prepara. Estude e tire o acaso da equação.'},
+  {e:'🌐',t:'O setor de petróleo move o Brasil. Fazer parte disso começa com o estudo que você faz agora.'},
+  {e:'💥',t:'Saia da zona de conforto hoje. Estude a matéria que você tem evitado.'},
+  {e:'🔐',t:'Legislação parece chata, mas é ponto certo na prova. Decore o essencial.'},
+  {e:'🚂',t:'Comece. O maior obstáculo é a inércia. Uma vez em movimento, fica mais fácil.'},
+  {e:'🌈',t:'Dias ruins de estudo também contam. Aparecer é mais importante do que a perfeição.'},
+  {e:'🔮',t:'Visualize seu nome na lista de aprovados. Agora estude para tornar essa visão realidade.'},
+  {e:'🦁',t:'Tenha coragem de encarar as matérias difíceis. É exatamente aí que a aprovação é construída.'},
+  {e:'🏖️',t:'Aprovação primeiro, férias depois. O descanso tem muito mais gosto quando vem merecido.'},
+  {e:'🧪',t:'Operações Unitárias e processos industriais são o coração do cargo. Domine-os.'},
+  {e:'💫',t:'Você está mais perto do que imagina. Não desista agora.'},
+  {e:'🌻',t:'Cada matéria que você aprende é uma porta que se abre na prova. Continue abrindo portas.'},
+  {e:'⚓',t:'Mantenha o foco. Distrações são temporárias, mas o arrependimento de não passar pode durar anos.'},
+  {e:'🎁',t:'A aprovação é o presente que você dá para si mesmo com meses de dedicação.'},
+  {e:'🏋️',t:'Mente treinada, assim como músculo: cresce com esforço repetido. Treine a sua hoje.'},
+  {e:'🌊',t:'Seja constante como o mar — nem todo dia tem ondas grandes, mas o mar nunca para.'},
+  {e:'🦊',t:'Seja esperto: estude as matérias de maior peso primeiro. Inteligência também é estratégia.'},
+  {e:'🌿',t:'Pausas fazem parte do processo. Descanse, mas volte. A prova não espera.'},
+];
+function renderMensagemDia(){
+  const el=document.getElementById('msg-texto'),ee=document.getElementById('msg-emoji'),ed=document.getElementById('msg-data');
+  if(!el)return;
+  const now=new Date();
+  const dayOfYear=Math.floor((now-new Date(now.getFullYear(),0,0))/86400000);
+  const msg=MENSAGENS[dayOfYear%MENSAGENS.length];
+  ee.textContent=msg.e;el.textContent=msg.t;
+  ed.textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+}
+
+// ======== SINCRONIZAÇÃO GITHUB GIST ========
+const GIST_FILE = 'petrobras_coach_data.json';
+const GIST_DESC = 'Petrobras Coach — Backup Automático';
+let syncDebounceTimer = null;
+let syncInProgress = false;
+
+function syncGetToken(){ return localStorage.getItem('petrobras_sync_token')||''; }
+function syncGetGistId(){ return localStorage.getItem('petrobras_sync_gist_id')||''; }
+function syncSetToken(t){ localStorage.setItem('petrobras_sync_token', t); }
+function syncSetGistId(id){ localStorage.setItem('petrobras_sync_gist_id', id); }
+
+function syncSetStatus(type, msg){
+  // Sidebar
+  const dot = document.getElementById('sb-sync-dot');
+  const lbl = document.getElementById('sb-sync-label');
+  if(dot){ dot.className='sb-sync-dot '+type; }
+  if(lbl) lbl.textContent = msg;
+  // Config card
+  const area = document.getElementById('sync-status-area');
+  if(!area) return;
+  const cls = {ok:'sync-ok',err:'sync-err',ing:'sync-ing',idle:'sync-idle'}[type]||'sync-idle';
+  const dotCls = {ok:'sync-dot-ok',err:'sync-dot-err',ing:'sync-dot-ing',idle:'sync-dot-idle'}[type]||'sync-dot-idle';
+  area.innerHTML = `<div class="sync-status ${cls}"><div class="sync-dot ${dotCls}"></div><span>${msg}</span></div>`;
+}
+
+async function gistRequest(method, path, body){
+  const token = syncGetToken();
+  if(!token) throw new Error('Token não configurado');
+  const res = await fetch('https://api.github.com'+path, {
+    method,
+    headers:{
+      'Authorization': 'token '+token,
+      'Content-Type': 'application/json',
+      'Accept': 'application/vnd.github.v3+json'
+    },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if(!res.ok){
+    const err = await res.json().catch(()=>({}));
+    throw new Error(err.message||'Erro '+res.status);
+  }
+  return res.json();
+}
+
+async function syncNow(){
+  if(syncInProgress) return;
+  const token = syncGetToken();
+  if(!token){ syncSetStatus('idle','Sync não configurado'); return; }
+  syncInProgress = true;
+  syncSetStatus('ing','Salvando na nuvem...');
+  try{
+    const content = JSON.stringify({...state, _syncedAt: new Date().toISOString()});
+    const fileObj = { [GIST_FILE]: { content } };
+    let gistId = syncGetGistId();
+    if(gistId){
+      await gistRequest('PATCH', '/gists/'+gistId, { files: fileObj });
+    } else {
+      const created = await gistRequest('POST', '/gists', {
+        description: GIST_DESC, public: false, files: fileObj
+      });
+      gistId = created.id;
+      syncSetGistId(gistId);
+      renderSyncConfig();
+    }
+    const now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    syncSetStatus('ok', '✓ Sincronizado às '+now);
+  } catch(e){
+    syncSetStatus('err', '✗ Erro: '+e.message);
+  } finally {
+    syncInProgress = false;
+  }
+}
+
+async function syncPull(){
+  const gistId = syncGetGistId();
+  if(!gistId){ syncSetStatus('err','Nenhum Gist configurado.'); return; }
+  syncSetStatus('ing','Carregando da nuvem...');
+  try{
+    const gist = await gistRequest('GET', '/gists/'+gistId);
+    const raw = gist.files[GIST_FILE]?.content;
+    if(!raw) throw new Error('Arquivo não encontrado no Gist');
+    const remote = JSON.parse(raw);
+    const localTime = state._syncedAt ? new Date(state._syncedAt) : new Date(0);
+    const remoteTime = remote._syncedAt ? new Date(remote._syncedAt) : new Date(0);
+    if(remoteTime <= localTime){
+      syncSetStatus('ok', 'Dados locais já são os mais recentes.');
+      return;
+    }
+    if(!confirm('Dados mais recentes encontrados na nuvem ('+ new Date(remote._syncedAt).toLocaleString('pt-BR') +'). Substituir dados locais?')) return;
+    const {_syncedAt, ...clean} = remote;
+    state = {...state, ...clean};
+    saveState();
+    renderAll();
+    syncSetStatus('ok', '✓ Dados carregados da nuvem.');
+  } catch(e){
+    syncSetStatus('err', '✗ '+e.message);
+  }
+}
+
+function syncSave(){
+  const inp = document.getElementById('sync-token-inp');
+  if(!inp||!inp.value.trim()){ return; }
+  syncSetToken(inp.value.trim());
+  inp.value='';
+  renderSyncConfig();
+  syncNow();
+}
+
+function syncClear(){
+  localStorage.removeItem('petrobras_sync_token');
+  localStorage.removeItem('petrobras_sync_gist_id');
+  renderSyncConfig();
+  syncSetStatus('idle','Sync desconectado');
+}
+
+// Auto-sync com debounce de 15s após qualquer mudança
+function scheduleSyncAfterSave(){
+  if(!syncGetToken()) return;
+  clearTimeout(syncDebounceTimer);
+  syncDebounceTimer = setTimeout(syncNow, 15000);
+}
+
+function renderSyncConfig(){
+  const token = syncGetToken();
+  const gistId = syncGetGistId();
+  const inp = document.getElementById('sync-token-inp');
+  const gistRow = document.getElementById('sync-gist-row');
+  const gistInp = document.getElementById('sync-gist-inp');
+  const syncBtn = document.getElementById('sync-now-btn');
+  const pullBtn = document.getElementById('sync-pull-btn');
+  if(inp) inp.placeholder = token ? '••••••••••••••• (configurado)' : 'ghp_xxxxxxxxxxxx';
+  if(gistRow) gistRow.style.display = token ? 'block' : 'none';
+  if(gistInp) gistInp.value = gistId || '(será criado na primeira sincronização)';
+  if(syncBtn) syncBtn.style.display = token ? 'inline-flex' : 'none';
+  if(pullBtn) pullBtn.style.display = (token&&gistId) ? 'inline-flex' : 'none';
+  if(token){
+    syncSetStatus('idle', gistId ? 'Configurado — aguardando sync' : 'Token salvo — pronto para sincronizar');
+  } else {
+    syncSetStatus('idle', 'Sync não configurado');
+  }
+}
+
+// ======== INIT ========
+loadState();
+renderAll();
+renderMensagemDia();
+lastLevel=getLevelData(calcXP()).lvl;
+renderSyncConfig();
+// Pull automático ao abrir se sync configurado
+if(syncGetToken()&&syncGetGistId()){
+  setTimeout(()=>{
+    syncPull().catch(()=>{});
+  }, 2000);
+}
+document.getElementById('install-bar').style.display='flex';
+</script>
+</body>
+</html>
